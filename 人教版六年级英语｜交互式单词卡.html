@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>人教版六年级英语｜交互式单词卡（选择题+朗读）</title>
+<style>:root{
+--bg:#f6f8ff;--card:#ffffff;--brand:#4c7cf3;--brand-dark:#2f5fe6;--ok:#1aae6f;--warn:#ff7a59;--text:#1f2d3d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;background:linear-gradient(90deg,#6287ff,#87a6ff);color:#fff;padding:14px 16px;z-index:10}
+header h1{margin:0;font-size:18px}
+header small{opacity:.9}
+main{max-width:980px;margin:20px auto;padding:0 16px}
+.panel{background:var(--card);border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.08);padding:18px}
+.flex{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn{appearance:none;border:none;border-radius:10px;padding:10px 14px;background:var(--brand);color:#fff;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--brand-dark)}
+.btn.ghost{background:#e8eeff;color:#2f54eb}
+.btn.ok{background:var(--ok)}
+.btn.warn{background:var(--warn)}
+.stat{display:flex;gap:12px;flex-wrap:wrap}
+.stat div{background:#eef3ff;color:#28428f;padding:8px 10px;border-radius:8px;font-size:14px}
+.card{margin-top:16px;background:var(--card);border-radius:16px;box-shadow:0 10px 32px rgba(0,0,0,.12);padding:24px}
+.qtitle{font-size:15px;color:#667085;margin-bottom:12px}
+.word{font-size:28px;font-weight:800;display:inline-flex;align-items:center;gap:10px}
+.speak{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#eef3ff;color:#28428f;cursor:pointer;border:none}
+.choices{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.choice{border:1.2px solid #e6e9f5;border-radius:12px;padding:12px 14px;background:#fff;text-align:left;cursor:pointer;font-size:16px}
+.choice:hover{border-color:#c7d2fe;background:#f7f9ff}
+.choice.correct{border-color:var(--ok);background:#eefbf5}
+.choice.wrong{border-color:var(--warn);background:#fff4f1}
+.progress{height:8px;background:#e9ecfb;border-radius:999px;overflow:hidden;margin-top:16px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#4c7cf3,#3fd0c9)}
+.footer{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:#6b7280;font-size:13px}
+.bank{margin-top:14px;color:#6b7280;font-size:12px}
+@media (max-width:560px){
+.choices{grid-template-columns:1fr}
+.word{font-size:24px}
+}</style>
+</head>
+<body>
+<header>
+<h1>人教版六年级英语｜交互式单词卡</h1>
+</header>
+<main>
+<section class="panel flex" id="toolbar">
+<button class="btn" id="startBtn">开始练习（随机20题）</button>
+<button class="btn ghost" id="reshuffleBtn">换一批</button>
+<button class="btn ghost" id="reviewBtn">错题再练</button>
+<div class="stat">
+<div>题目：<span id="idx">0</span>/<span id="total">20</span></div>
+<div>得分：<span id="score">0</span></div>
+<div>用时：<span id="time">00:00</span></div>
+</div>
+</section>
+<section class="card" id="quizCard" style="display:none">
+<div class="qtitle">选择与下列英文对应的中文意思：</div>
+<div class="word">
+<button class="speak" id="speakBtn" title="点击朗读">🔊</button>
+<span id="enWord">science</span>
+</div>
+<div class="choices" id="choices"></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="footer">
+<div class="muted" id="feedback">点击选项作答</div>
+<div class="flex">
+<button class="btn ghost" id="showAnsBtn">显示答案</button>
+<button class="btn ok" id="nextBtn">下一题 ▶</button>
+</div>
+</div>
+</section>
+<section class="panel" id="resultPanel" style="display:none">
+<h3>本次成绩</h3>
+<p>共 <b id="r_total">20</b> 题，答对 <b id="r_right">0</b> 题，正确率 <b id="r_rate">0%</b>，用时 <b id="r_time">00:00</b>。</p>
+<div class="flex">
+<button class="btn" id="retryBtn">再来一组</button>
+<button class="btn ghost" id="reviewBtn2">只练错题</button>
+</div>
+<p class="bank">词库来源：人教版（PEP）小学六年级英语教材常见词汇，参照网络公开词表整理，仅用于学习交流。</p>
+</section>
+<section class="panel" style="margin-top:14px">
+<details>
+<summary>使用说明</summary>
+<ul>
+<li>点击🔊即可用浏览器内置语音合成朗读英文单词/短语。</li>
+<li>默认每次随机 20 题，选错会自动加入“错题本”，可点击“错题再练”。</li>
+<li>如朗读无声，请在浏览器地址栏允许“自动播放/声音”，或更换浏览器（推荐 Chrome/Edge）。</li>
+</ul>
+</details>
+</section>
+</main>
+<script>const WORD_BANK = [
+{en:'on foot', zh:'步行'},
+{en:'by bike', zh:'骑自行车'},
+{en:'by bus', zh:'乘公共汽车'},
+{en:'by car', zh:'乘小汽车'},
+{en:'by plane', zh:'乘飞机'},
+{en:'by ship', zh:'乘轮船'},
+{en:'by subway', zh:'乘地铁'},
+{en:'by train', zh:'乘火车'},
+{en:'traffic', zh:'交通'},
+{en:'traffic light', zh:'交通信号灯'},
+{en:'traffic rule', zh:'交通规则'},
+{en:'stop', zh:'停止'},
+{en:'wait', zh:'等待'},
+{en:'go', zh:'走，通行'},
+{en:'get to', zh:'到达'},
+{en:'how', zh:'怎样，如何'},
+{en:'far', zh:'远'},
+{en:'kilometre', zh:'公里，千米'},
+{en:'library', zh:'图书馆'},
+{en:'hospital', zh:'医院'},
+{en:'cinema', zh:'电影院'},
+{en:'post office', zh:'邮局'},
+{en:'bookstore', zh:'书店'},
+{en:'science museum', zh:'科学博物馆'},
+{en:'where', zh:'在哪里'},
+{en:'please', zh:'请'},
+{en:'turn left', zh:'向左转'},
+{en:'turn right', zh:'向右转'},
+{en:'go straight', zh:'直走'},
+{en:'next to', zh:'紧邻'},
+{en:'north', zh:'北'},
+{en:'south', zh:'南'},
+{en:'east', zh:'东'},
+{en:'west', zh:'西'},
+{en:'comic book', zh:'漫画书'},
+{en:'post card', zh:'明信片'},
+{en:'newspaper', zh:'报纸'},
+{en:'buy', zh:'买'},
+{en:'last', zh:'上一个的'},
+{en:'weekend', zh:'周末'},
+{en:'went', zh:'去(go的过去式)'},
+{en:'read a book', zh:'看书'},
+{en:'yesterday', zh:'昨天'},
+{en:'saw a film', zh:'看电影'},
+{en:'had a cold', zh:'感冒了'},
+{en:'ate', zh:'吃(eat的过去式)'},
+{en:'took', zh:'拍(take的过去式)'},
+{en:'climbed', zh:'爬(climb的过去式)'},
+{en:'visited', zh:'拜访(visit的过去式)'},
+{en:'hobby', zh:'爱好'},
+{en:'collecting stamps', zh:'集邮'},
+{en:'riding a bike', zh:'骑自行车'},
+{en:'diving', zh:'潜水'},
+{en:'making kites', zh:'做风筝'},
+{en:'watching insects', zh:'观察昆虫'},
+{en:'does', zh:'做(do的第三人称单数)'},
+{en:'live', zh:'居住'},
+{en:'teach', zh:'教'},
+{en:'singer', zh:'歌手'},
+{en:'writer', zh:'作家'},
+{en:'actor', zh:'男演员'},
+{en:'actress', zh:'女演员'},
+{en:'artist', zh:'画家'},
+{en:'TV reporter', zh:'电视台记者'},
+{en:'engineer', zh:'工程师'},
+{en:'accountant', zh:'会计'},
+{en:'policeman', zh:'警察'},
+{en:'salesperson', zh:'销售员'},
+{en:'cleaner', zh:'清洁工'},
+{en:'work', zh:'工作'},
+{en:'job', zh:'工作，职业'},
+{en:'cloudy', zh:'多云的'},
+{en:'sunny', zh:'晴朗的'},
+{en:'rainy', zh:'下雨的'},
+{en:'snowy', zh:'下雪的'},
+{en:'windy', zh:'有风的'},
+{en:'weather', zh:'天气'},
+{en:'how is', zh:'...怎么样'},
+{en:'cold', zh:'冷的'},
+{en:'hot', zh:'热的'},
+{en:'cool', zh:'凉爽的'},
+{en:'warm', zh:'温暖的'},
+{en:'fly kites', zh:'放风筝'},
+{en:'skate', zh:'滑冰'},
+{en:'make a snowman', zh:'堆雪人'},
+{en:'plant trees', zh:'种树'},
+{en:'take pictures', zh:'拍照'},
+{en:'season', zh:'季节'},
+{en:'spring', zh:'春天'},
+{en:'summer', zh:'夏天'},
+{en:'autumn', zh:'秋天'},
+{en:'winter', zh:'冬天'},
+{en:'tall', zh:'高的'},
+{en:'taller', zh:'更高的'},
+{en:'short', zh:'矮的'},
+{en:'shorter', zh:'更矮的'},
+{en:'strong', zh:'强壮的'},
+{en:'stronger', zh:'更强壮的'},
+{en:'old', zh:'年长的'},
+{en:'older', zh:'更年长的'},
+{en:'young', zh:'年轻的'},
+{en:'younger', zh:'更年轻的'},
+{en:'big', zh:'大的'},
+{en:'bigger', zh:'更大的'},
+{en:'small', zh:'小的'},
+{en:'smaller', zh:'更小的'},
+{en:'long', zh:'长的'},
+{en:'longer', zh:'更长的'},
+{en:'heavy', zh:'重的'},
+{en:'heavier', zh:'更重的'},
+{en:'thin', zh:'瘦的'},
+{en:'thinner', zh:'更瘦的'},
+{en:'kilogram', zh:'千克'},
+{en:'metre', zh:'米'},
+{en:'centimetre', zh:'厘米'},
+{en:'matter', zh:'事情，问题'},
+{en:'sore', zh:'疼痛的'},
+{en:'have a fever', zh:'发烧'},
+{en:'have a cold', zh:'感冒'},
+{en:'have a headache', zh:'头痛'},
+{en:'have a toothache', zh:'牙痛'},
+{en:'feel', zh:'感觉'},
+{en:'tired', zh:'疲劳的'},
+{en:'excited', zh:'兴奋的'},
+{en:'happy', zh:'高兴的'},
+{en:'sad', zh:'伤心的'},
+{en:'angry', zh:'生气的'},
+{en:'worried', zh:'担心的'},
+{en:'afraid', zh:'害怕的'},
+{en:'should', zh:'应该'},
+{en:'lie down', zh:'躺下'},
+{en:'rest', zh:'休息'},
+{en:'drink water', zh:'喝水'},
+{en:'holiday', zh:'假期'},
+{en:'went to', zh:'去了(某地)'},
+{en:'rode a horse', zh:'骑马'},
+{en:'went fishing', zh:'去钓鱼'},
+{en:'went camping', zh:'去野营'},
+{en:'took photos', zh:'拍照'},
+{en:'swam', zh:'游泳(swim的过去式)'},
+{en:'slept', zh:'睡觉(sleep的过去式)'},
+{en:'hurt', zh:'受伤'},
+{en:'fell', zh:'摔倒(fall的过去式)'},
+{en:'first', zh:'第一'},
+{en:'second', zh:'第二'},
+{en:'third', zh:'第三'},
+{en:'fourth', zh:'第四'},
+{en:'fifth', zh:'第五'},
+{en:'eighth', zh:'第八'},
+{en:'ninth', zh:'第九'},
+{en:'twelfth', zh:'第十二'},
+{en:'twentieth', zh:'第二十'},
+{en:'January', zh:'一月'},
+{en:'February', zh:'二月'},
+{en:'March', zh:'三月'},
+{en:'April', zh:'四月'},
+{en:'May', zh:'五月'},
+{en:'June', zh:'六月'},
+{en:'July', zh:'七月'},
+{en:'August', zh:'八月'},
+{en:'September', zh:'九月'},
+{en:'October', zh:'十月'},
+{en:'November', zh:'十一月'},
+{en:'December', zh:'十二月'},
+{en:'date', zh:'日期'},
+{en:'birthday', zh:'生日'},
+{en:'be going to', zh:'将要，打算'},
+{en:'tomorrow', zh:'明天'},
+{en:'next week', zh:'下周'},
+{en:'wash clothes', zh:'洗衣服'},
+{en:'clean the room', zh:'打扫房间'},
+{en:'see a film', zh:'看电影'},
+{en:'read magazines', zh:'看杂志'},
+{en:'go for a walk', zh:'去散步'},
+{en:'play football', zh:'踢足球'},
+{en:'in the morning', zh:'在早上'},
+{en:'in the afternoon', zh:'在下午'},
+{en:'in the evening', zh:'在晚上'},
+];
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+return arr;
+}
+function sample(arr,n){
+const a=shuffle([...arr]);
+return a.slice(0,n);
+}
+let questions=[];
+let idx=0, score=0, started=false, timer=null, startAt=0;
+let wrongBook=[];
+const el = (id)=>document.getElementById(id);
+function updateStat(){
+el('idx').textContent = Math.min(idx+1, questions.length);
+el('total').textContent = questions.length;
+el('score').textContent = score;
+const pct = questions.length? (idx/questions.length*100):0;
+el('bar').style.width = pct + '%';
+}
+let voices = [];
+function populateVoiceList() {
+if(typeof speechSynthesis === 'undefined') return;
+voices = speechSynthesis.getVoices();
+}
+populateVoiceList();
+if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+function speak(text){
+if(typeof speechSynthesis === 'undefined') {
+alert('抱歉，您的浏览器不支持语音朗读功能。');
+return;
+}
+try{
+const u = new SpeechSynthesisUtterance(text);
+const enUSVoice = voices.find(voice => voice.lang === 'en-US');
+if (enUSVoice) {
+u.voice = enUSVoice;
+}
+u.lang = 'en-US';
+u.rate = 0.95;
+u.pitch = 1;
+window.speechSynthesis.cancel();
+window.speechSynthesis.speak(u);
+}catch(e){
+console.error('语音朗读发生错误:', e);
+}
+}
+function genChoices(correctZh){
+const pool = WORD_BANK.filter(w=>w.zh!==correctZh).map(w=>w.zh);
+const wrongs = sample(pool, 3);
+const opts = shuffle([correctZh, ...wrongs]);
+return opts;
+}
+function renderQuestion(){
+if(idx>=questions.length){
+finish();
+return;
+}
+updateStat();
+const q = questions[idx];
+el('enWord').textContent = q.en;
+el('feedback').textContent = '点击选项作答';
+const container = el('choices');
+container.innerHTML='';
+genChoices(q.zh).forEach((label)=>{
+const b = document.createElement('button');
+b.className='choice';
+b.textContent = label;
+b.onclick = ()=>checkAnswer(b, label===q.zh);
+container.appendChild(b);
+});
+}
+function checkAnswer(btn, ok){
+const q = questions[idx];
+const items = [...document.querySelectorAll('.choice')];
+items.forEach(it=>{
+it.disabled=true;
+if(it.textContent===q.zh){it.classList.add('correct')} else if(it===btn && !ok){it.classList.add('wrong')}
+});
+if(ok){
+score++; el('feedback').textContent='✅ 回答正确！';
+}else{
+el('feedback').textContent=`❌ 回答错误。正确答案：${q.zh}`;
+wrongBook.push(q);
+}
+updateStat();
+}
+function next(){
+idx++;
+renderQuestion();
+}
+function start(onlyWrong=false){
+started=true; score=0; idx=0; wrongBook = wrongBook || [];
+questions = onlyWrong && wrongBook.length>0 ? sample([...new Set(wrongBook.map(JSON.stringify))].map(JSON.parse), Math.min(20, wrongBook.length)) : sample(WORD_BANK, 20);
+el('quizCard').style.display='block';
+el('resultPanel').style.display='none';
+startTimer();
+renderQuestion();
+}
+function finish(){
+stopTimer();
+el('quizCard').style.display='none';
+el('resultPanel').style.display='block';
+el('r_total').textContent = questions.length;
+el('r_right').textContent = score;
+const rate = questions.length? Math.round(score/questions.length*100):0;
+el('r_rate').textContent = rate + '%';
+el('r_time').textContent = el('time').textContent;
+}
+function startTimer(){
+startAt = Date.now();
+if(timer) clearInterval(timer);
+timer = setInterval(()=>{
+const s = Math.floor((Date.now()-startAt)/1000);
+const mm = String(Math.floor(s/60)).padStart(2,'0');
+const ss = String(s%60).padStart(2,'0');
+el('time').textContent = mm+':'+ss;
+}, 250);
+}
+function stopTimer(){
+if(timer){clearInterval(timer); timer=null;}
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+el('startBtn').onclick = ()=>start(false);
+el('reshuffleBtn').onclick = ()=>start(false);
+el('retryBtn').onclick = () => start(false);
+el('reviewBtn').onclick = ()=> start(true);
+el('reviewBtn2').onclick = ()=> start(true);
+el('nextBtn').onclick = next;
+el('showAnsBtn').onclick = ()=>{
+const q = questions[idx];
+const items = [...document.querySelectorAll('.choice')];
+items.forEach(it=>{it.disabled=true; if(it.textContent===q.zh){it.classList.add('correct')}});
+el('feedback').textContent = '已显示答案';
+};
+el('speakBtn').onclick = ()=> speak(el('enWord').textContent);
+});</script>
+</body>
+</html>
