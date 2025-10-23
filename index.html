@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线拉密小游戏-牌桌对战版</title>
+<style>
+:root {
+--table-bg: #0a3d24;
+--table-felt-bg: linear-gradient(45deg, #0a3d24, #105c3a);
+--panel-bg: rgba(0, 0, 0, 0.2);
+--border-color: rgba(255, 255, 255, 0.1);
+--text-light: #f0f0f0;
+--text-dark: #333;
+--tile-bg: #fffff0;
+--shadow-light: rgba(255, 255, 255, 0.2);
+--shadow-dark: rgba(0, 0, 0, 0.4);
+--accent-green: #66bb6a;
+--accent-orange: #ffab40;
+--accent-blue: #448aff;
+--accent-red: #ef5350;
+--workspace-bg: rgba(0, 0, 0, 0.35);
+}
+html, body {
+height: 100%;
+overflow: hidden;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+background: var(--table-felt-bg);
+color: var(--text-light);
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+#setup-screen {
+background-color: var(--tile-bg);
+color: var(--text-dark);
+padding: 30px 40px;
+border-radius: 10px;
+box-shadow: 0 10px 30px var(--shadow-dark);
+text-align: center;
+z-index: 20;
+}
+#setup-screen h2 {
+margin-top: 0;
+margin-bottom: 20px;
+}
+#player-count-selector {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-bottom: 25px;
+}
+.player-count-option {
+padding: 10px 20px;
+font-size: 16px;
+border: 2px solid #ccc;
+border-radius: 5px;
+cursor: pointer;
+transition: all 0.2s;
+}
+.player-count-option:hover {
+background-color: #f0f0f0;
+}
+.player-count-option.selected {
+border-color: var(--accent-green);
+background-color: #e8f5e9;
+font-weight: bold;
+}
+#start-game-button {
+width: 100%;
+}
+#game-container {
+width: 100%;
+height: 100%;
+display: none;
+flex-direction: column;
+position: relative;
+padding: 20px 140px;
+box-sizing: border-box;
+}
+#top-right-controls {
+position: absolute;
+top: 20px;
+right: 20px;
+z-index: 100;
+}
+#rules-button {
+background-color: #007bff;
+color: #fff;
+}
+.opponent-slot {
+position: absolute;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 5;
+}
+#opponent-slot-top {
+top: 15px;
+left: 150px;
+right: 150px;
+}
+#opponent-slot-left {
+left: 15px;
+top: 0;
+bottom: 0;
+width: 120px;
+}
+#opponent-slot-right {
+right: 15px;
+top: 0;
+bottom: 0;
+width: 120px;
+}
+.opponent-rack {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+}
+.opponent-rack-label {
+font-size: 14px;
+font-weight: bold;
+}
+.opponent-rack-tiles {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+padding: 5px;
+background: var(--panel-bg);
+border-radius: 8px;
+}
+#opponent-slot-top .opponent-rack-tiles {
+max-width: 500px;
+}
+#opponent-slot-left .opponent-rack,
+#opponent-slot-right .opponent-rack {
+width: 100%;
+}
+#opponent-slot-left .opponent-rack-tiles,
+#opponent-slot-right .opponent-rack-tiles {
+max-width: 100%;
+gap: 5px;
+}
+.tile-back {
+width: 45px;
+height: 65px;
+background-color: var(--tile-bg);
+border: 1px solid rgba(0,0,0,0.1);
+border-radius: 5px;
+box-shadow: 0 1px 3px var(--shadow-dark);
+border-bottom: 4px solid rgba(0,0,0,0.2);
+}
+#main-table-content {
+display: flex;
+flex-direction: column;
+height: 100%;
+gap: 8px;
+padding-top: 300px;
+}
+#status-message {
+font-size: 18px;
+font-weight: bold;
+min-height: 27px;
+text-shadow: 1px 1px 2px var(--shadow-dark);
+text-align: center;
+width: 100%;
+}
+#player-status-bar {
+display: flex;
+gap: 15px;
+padding: 5px 10px;
+justify-content: center;
+flex-wrap: wrap;
+}
+.opponent {
+background: rgba(255, 255, 255, 0.1);
+padding: 8px 15px;
+border-radius: 20px;
+font-size: 14px;
+box-shadow: inset 0 1px 3px var(--shadow-dark);
+transition: all 0.3s ease;
+border: 2px solid transparent;
+}
+.opponent.current-turn {
+border-color: var(--accent-green);
+font-weight: bold;
+transform: scale(1.05);
+background: rgba(102, 187, 106, 0.3);
+}
+#controls {
+display: flex;
+gap: 10px;
+justify-content: center;
+width: 100%;
+padding: 10px 0;
+flex-wrap: wrap;
+}
+button {
+padding: 10px 20px;
+font-size: 14px;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+color: white;
+font-weight: bold;
+text-transform: uppercase;
+letter-spacing: 1px;
+transition: all 0.3s ease;
+box-shadow: 0 2px 5px var(--shadow-dark);
+}
+button:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 8px var(--shadow-dark);
+}
+button:disabled {
+background-color: #9e9e9e !important;
+cursor: not-allowed;
+transform: translateY(0);
+box-shadow: none;
+}
+#hint-button { background-color: var(--accent-blue); }
+#group-button { background-color: var(--accent-green); }
+#reset-turn-button { background-color: var(--accent-orange); }
+#confirm-turn-button { background-color: #78909c; }
+#draw-button { background-color: var(--accent-red); }
+.area-title {
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 8px;
+padding-bottom: 5px;
+border-bottom: 2px solid var(--border-color);
+text-shadow: 1px 1px 2px var(--shadow-dark);
+text-align: center;
+margin-top: 5px;
+}
+#board, #player-rack, #floating-area {
+background: var(--panel-bg);
+border: 1px solid var(--border-color);
+border-radius: 8px;
+padding: 10px;
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+align-content: flex-start;
+justify-content: center;
+}
+#board {
+flex-grow: 1;
+overflow-y: auto;
+min-height: 100px;
+}
+#floating-area {
+background: var(--workspace-bg);
+border-style: dashed;
+min-height: 90px;
+}
+#player-rack {
+min-height: 90px;
+}
+.tile-set {
+display: flex;
+gap: 4px;
+padding: 6px;
+border: 1px dashed rgba(255, 255, 255, 0.3);
+border-radius: 6px;
+background-color: rgba(0, 0, 0, 0.2);
+height: fit-content;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+.tile-set:hover {
+background-color: rgba(255, 255, 255, 0.1);
+}
+.tile {
+width: 45px;
+height: 65px;
+border-radius: 5px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 24px;
+font-weight: 700;
+cursor: pointer;
+user-select: none;
+background-color: var(--tile-bg);
+color: var(--text-dark);
+box-shadow: 0 1px 3px var(--shadow-dark);
+border-bottom: 4px solid rgba(0,0,0,0.2);
+transition: all 0.2s ease-out;
+}
+.tile.color-red { color: #d32f2f; }
+.tile.color-blue { color: #1976d2; }
+.tile.color-orange { color: #f57c00; }
+.tile.color-black { color: #212121; }
+.tile.color-joker {
+background-image: linear-gradient(45deg, #d32f2f, #f57c00, #1976d2, #212121);
+background-size: 400% 400%;
+animation: joker-gradient 5s ease infinite;
+color: white;
+text-shadow: 1px 1px 2px #000;
+}
+@keyframes joker-gradient {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+.tile.selected {
+border-color: var(--accent-orange);
+transform: translateY(-8px);
+box-shadow: 0 6px 12px var(--shadow-dark);
+}
+.tile.newly-drawn {
+animation: pulse-glow 1s 3;
+}
+@keyframes pulse-glow {
+0%, 100% { box-shadow: 0 1px 3px var(--shadow-dark); }
+50% { box-shadow: 0 0 15px 5px #fff3e0; }
+}
+#rules-modal {
+display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7);
+}
+#rules-modal-content {
+background-color: var(--tile-bg); color: var(--text-dark);
+margin: 5% auto; padding: 20px 30px; border: none;
+width: 90%; max-width: 700px; border-radius: 10px; position: relative;
+box-shadow: 0 10px 30px var(--shadow-dark);
+}
+#close-rules-button {
+position: absolute; top: 10px; right: 20px; color: #aaa;
+font-size: 32px; font-weight: bold; cursor: pointer;
+transition: color 0.2s;
+}
+#close-rules-button:hover { color: var(--text-dark); }
+.hidden {
+display: none !important;
+}
+</style>
+</head>
+<body>
+<div id="setup-screen">
+<h2>欢迎来到拉密游戏</h2>
+<p>请选择玩家总人数（包括您）：</p>
+<div id="player-count-selector">
+<div class="player-count-option" data-count="2">2人</div>
+<div class="player-count-option" data-count="3">3人</div>
+<div class="player-count-option" data-count="4">4人</div>
+</div>
+<button id="start-game-button" class="start-button" disabled>开始游戏</button>
+</div>
+<div id="game-container">
+<div id="top-right-controls">
+<button id="rules-button">规则</button>
+</div>
+<div id="opponent-slot-top" class="opponent-slot"></div>
+<div id="opponent-slot-left" class="opponent-slot"></div>
+<div id="opponent-slot-right" class="opponent-slot"></div>
+<div id="main-table-content">
+<div id="status-message"></div>
+<div id="player-status-bar"></div>
+<div class="area-title">桌面</div>
+<div id="board"></div>
+<div class="area-title" id="floating-area-title">临时操作区</div>
+<div id="floating-area"></div>
+<div id="controls">
+<button id="hint-button">提示</button>
+<button id="group-button">组成牌组</button>
+<button id="reset-turn-button">重置回合</button>
+<button id="confirm-turn-button">确认出牌</button>
+<button id="draw-button">摸牌并结束回合</button>
+</div>
+<div class="area-title">我的手牌 (玩家1)</div>
+<div id="player-rack"></div>
+</div>
+</div>
+<div id="rules-modal">
+<div id="rules-modal-content">
+<span id="close-rules-button">&times;</span>
+<h3 style="text-align:center; margin-top:0;">拉密（Rummikub）游戏规则</h3>
+<ul style="padding-left: 20px; list-style: disc;">
+<li style="margin-bottom: 10px;"><strong>游戏目标：</strong>成为最先将手中所有的牌都打出的玩家。</li>
+<li style="margin-bottom: 10px;"><strong>牌库组成：</strong>共106张牌，包括4种颜色（黑、蓝、橙、红）的1-13数字牌各2套，以及2张百搭牌（Joker）。</li>
+<li style="margin-bottom: 10px;"><strong>牌组规则：</strong>打出的牌必须组成有效的“牌组”，至少3张牌。
+<ul style="padding-left: 20px; margin-top: 10px;">
+<li><strong>群组（Group）：</strong>3或4张数字相同、颜色全部不同的牌。</li>
+<li><strong>顺组（Run）：</strong>3张或以上颜色相同、数字连续的牌。</li>
+</ul>
+</li>
+<li style="margin-bottom: 10px;"><strong>重组规则：</strong>轮到您时，您可以拆开桌面上已有的任何牌组，并结合您手中的牌，重新组成新的、全部合法的牌组。所有操作结束后，桌面上不能有少于3张牌的牌组。</li>
+<li style="margin-bottom: 10px;"><strong>回合流程：</strong>如果您无法或不想出牌（或重组），则必须从牌堆摸一张牌，然后回合结束。成功出牌后，点击“确认出牌”。</li>
+</ul>
+</div>
+</div>
+<script>
+const TILE_COLORS = ['red', 'blue', 'orange', 'black'];
+const TILE_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+let gameState = {};
+let turnState = {};
+const setupScreen = document.getElementById('setup-screen');
+const gameContainer = document.getElementById('game-container');
+const playerCountSelector = document.getElementById('player-count-selector');
+const startGameButton = document.getElementById('start-game-button');
+const statusMessage = document.getElementById('status-message');
+const playerRackDiv = document.getElementById('player-rack');
+const playerStatusBar = document.getElementById('player-status-bar');
+const boardDiv = document.getElementById('board');
+const floatingArea = document.getElementById('floating-area');
+const floatingAreaTitle = document.getElementById('floating-area-title');
+const hintButton = document.getElementById('hint-button');
+const groupButton = document.getElementById('group-button');
+const resetTurnButton = document.getElementById('reset-turn-button');
+const confirmTurnButton = document.getElementById('confirm-turn-button');
+const drawButton = document.getElementById('draw-button');
+const rulesButton = document.getElementById('rules-button');
+const rulesModal = document.getElementById('rules-modal');
+const closeRulesButton = document.getElementById('close-rules-button');
+const opponentSlotTop = document.getElementById('opponent-slot-top');
+const opponentSlotLeft = document.getElementById('opponent-slot-left');
+const opponentSlotRight = document.getElementById('opponent-slot-right');
+
+function createTilePool() {
+let pool = [];
+let id = 0;
+TILE_COLORS.forEach(color => {
+TILE_NUMBERS.forEach(number => {
+pool.push({ id: id++, number, color, isJoker: false });
+pool.push({ id: id++, number, color, isJoker: false });
+});
+});
+pool.push({ id: id++, number: 0, color: 'joker', isJoker: true });
+pool.push({ id: id++, number: 0, color: 'joker', isJoker: true });
+return pool;
+}
+
+function shuffle(array) {
+for (let i = array.length - 1; i > 0; i--) {
+const j = Math.floor(Math.random() * (i + 1));
+[array[i], array[j]] = [array[j], array[i]];
+}
+}
+
+function sortTiles(tiles) {
+tiles.sort((a, b) => {
+if (a.isJoker) return -1;
+if (b.isJoker) return 1;
+const colorOrder = TILE_COLORS.indexOf(a.color) - TILE_COLORS.indexOf(b.color);
+if (colorOrder !== 0) return colorOrder;
+return a.number - b.number;
+});
+}
+
+function createTileElement(tile) {
+const tileDiv = document.createElement('div');
+tileDiv.className = `tile color-${tile.color}`;
+tileDiv.textContent = tile.isJoker ? 'J' : tile.number;
+tileDiv.dataset.tileId = tile.id;
+if (turnState.selectedTileIds && turnState.selectedTileIds.includes(tile.id)) {
+tileDiv.classList.add('selected');
+}
+return tileDiv;
+}
+
+function renderTurnState() {
+boardDiv.innerHTML = '';
+turnState.boardSets.forEach((set, setIndex) => {
+const setDiv = document.createElement('div');
+setDiv.className = 'tile-set';
+set.forEach(tile => setDiv.appendChild(createTileElement(tile)));
+setDiv.addEventListener('click', () => handleBoardSetClick(setIndex));
+boardDiv.appendChild(setDiv);
+});
+playerRackDiv.innerHTML = '';
+turnState.rack.forEach(tile => {
+const tileEl = createTileElement(tile);
+if (tile.id === gameState.lastDrawnTileId) tileEl.classList.add('newly-drawn');
+tileEl.addEventListener('click', () => handleRackTileClick(tile.id));
+playerRackDiv.appendChild(tileEl);
+});
+floatingArea.innerHTML = '';
+turnState.floatingTiles.forEach(tile => {
+const tileEl = createTileElement(tile);
+tileEl.addEventListener('click', () => handleFloatingTileClick(tile.id));
+floatingArea.appendChild(tileEl);
+});
+groupButton.disabled = turnState.selectedTileIds.length < 3;
+const rackIsUnchanged = turnState.rack.length === turnState.originalRack.length && turnState.floatingTiles.filter(t => turnState.originalRack.some(ot => ot.id === t.id)).length === 0;
+const boardIsUnchanged = JSON.stringify(turnState.boardSets) === JSON.stringify(turnState.originalBoardSets);
+const hasMadeMove = !rackIsUnchanged || !boardIsUnchanged;
+confirmTurnButton.disabled = !hasMadeMove;
+}
+
+function renderOpponentLayout() {
+opponentSlotTop.innerHTML = '';
+opponentSlotLeft.innerHTML = '';
+opponentSlotRight.innerHTML = '';
+const npcs = gameState.players.filter(p => p.isNpc);
+function createOpponentElement(npc) {
+const rackContainer = document.createElement('div');
+rackContainer.className = 'opponent-rack';
+const rackLabel = document.createElement('div');
+rackLabel.className = 'opponent-rack-label';
+rackLabel.textContent = `玩家 ${npc.id + 1} (电脑)`;
+const tilesContainer = document.createElement('div');
+tilesContainer.className = 'opponent-rack-tiles';
+for (let i = 0; i < npc.rack.length; i++) {
+const tileBack = document.createElement('div');
+tileBack.className = 'tile-back';
+tilesContainer.appendChild(tileBack);
+}
+rackContainer.appendChild(rackLabel);
+rackContainer.appendChild(tilesContainer);
+return rackContainer;
+}
+if (npcs.length === 1) { // 2 players
+opponentSlotTop.appendChild(createOpponentElement(npcs[0]));
+} else if (npcs.length === 2) { // 3 players
+opponentSlotLeft.appendChild(createOpponentElement(npcs[0]));
+opponentSlotRight.appendChild(createOpponentElement(npcs[1]));
+} else if (npcs.length === 3) { // 4 players
+opponentSlotLeft.appendChild(createOpponentElement(npcs[0])); // Player 2
+opponentSlotTop.appendChild(createOpponentElement(npcs[1])); // Player 3
+opponentSlotRight.appendChild(createOpponentElement(npcs[2])); // Player 4
+}
+}
+
+function renderPlayerStatusBar() {
+playerStatusBar.innerHTML = '';
+gameState.players.forEach((player, index) => {
+const playerDiv = document.createElement('div');
+playerDiv.className = 'opponent';
+let tileCount = player.id === 0 ? turnState.rack.length : player.rack.length;
+playerDiv.textContent = `玩家 ${player.id + 1}${player.isNpc ? '(电脑)' : '(您)'}: ${tileCount} 张`;
+if (player.id === gameState.currentPlayerIndex) {
+playerDiv.classList.add('current-turn');
+}
+playerStatusBar.appendChild(playerDiv);
+});
+}
+
+function updateUIForTurn() {
+const isHumanTurn = !gameState.players[gameState.currentPlayerIndex].isNpc;
+[floatingArea, floatingAreaTitle, hintButton, groupButton, resetTurnButton, confirmTurnButton, drawButton].forEach(el => el.classList.toggle('hidden', !isHumanTurn));
+if (isHumanTurn) {
+statusMessage.textContent = '您的回合，请出牌或摸牌。';
+renderTurnState();
+} else {
+boardDiv.innerHTML = '';
+gameState.boardSets.forEach(set => {
+const setDiv = document.createElement('div');
+setDiv.className = 'tile-set';
+set.forEach(tile => setDiv.appendChild(createTileElement(tile)));
+boardDiv.appendChild(setDiv);
+});
+playerRackDiv.innerHTML = '';
+gameState.players[0].rack.forEach(tile => {
+const tileEl = createTileElement(tile);
+if (tile.id === gameState.lastDrawnTileId) {
+tileEl.classList.add('newly-drawn');
+}
+playerRackDiv.appendChild(tileEl);
+});
+}
+renderOpponentLayout();
+renderPlayerStatusBar();
+if (gameState.isGameOver) {
+const winner = gameState.players.find(p => p.rack.length === 0);
+statusMessage.textContent = `恭喜玩家 ${winner.id + 1}${winner.isNpc ? '(电脑)' : ''} 赢得比赛！`;
+document.querySelectorAll('#controls button').forEach(b => b.disabled = true);
+rulesButton.disabled = false;
+}
+}
+
+function processTurn() {
+if (gameState.isGameOver) return;
+gameState.lastDrawnTileId = null;
+const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+if (currentPlayer.isNpc) {
+statusMessage.textContent = `玩家 ${currentPlayer.id + 1} (电脑) 正在思考...`;
+setTimeout(executeNpcTurn, 50);
+} else {
+turnState = {
+originalBoardSets: JSON.parse(JSON.stringify(gameState.boardSets)),
+originalRack: JSON.parse(JSON.stringify(currentPlayer.rack)),
+boardSets: JSON.parse(JSON.stringify(gameState.boardSets)),
+rack: JSON.parse(JSON.stringify(currentPlayer.rack)),
+floatingTiles: [],
+selectedTileIds: [],
+boardTilesTouched: false,
+};
+gameState.lastDrawnTileId = null;
+}
+updateUIForTurn();
+}
+
+function handleRackTileClick(tileId) {
+const tile = turnState.rack.find(t => t.id === tileId);
+if (tile) {
+turnState.rack = turnState.rack.filter(t => t.id !== tileId);
+turnState.floatingTiles.push(tile);
+sortTiles(turnState.floatingTiles);
+renderTurnState();
+}
+}
+
+function handleBoardSetClick(setIndex) {
+const setToMove = turnState.boardSets[setIndex];
+turnState.boardSets.splice(setIndex, 1);
+turnState.floatingTiles.push(...setToMove);
+sortTiles(turnState.floatingTiles);
+renderTurnState();
+turnState.boardTilesTouched = true;
+}
+
+function handleFloatingTileClick(tileId) {
+const index = turnState.selectedTileIds.indexOf(tileId);
+if (index > -1) {
+turnState.selectedTileIds.splice(index, 1);
+} else {
+turnState.selectedTileIds.push(tileId);
+}
+renderTurnState();
+}
+
+function validateSet(tiles) {
+if (tiles.length < 3) return false;
+const jokers = tiles.filter(t => t.isJoker);
+const nonJokers = tiles.filter(t => !t.isJoker);
+if (nonJokers.length === 0) return false;
+if (nonJokers.length === 1) return true;
+const isGroupCandidate = new Set(nonJokers.map(t => t.color)).size === nonJokers.length;
+if (isGroupCandidate) {
+const numbers = new Set(nonJokers.map(t => t.number));
+if (numbers.size === 1 && tiles.length <= 4) return true;
+}
+const isRunCandidate = new Set(nonJokers.map(t => t.color)).size === 1;
+if (isRunCandidate) {
+const sorted = [...nonJokers].sort((a, b) => a.number - b.number);
+if (new Set(sorted.map(t => t.number)).size !== sorted.length) return false;
+const range = sorted[sorted.length - 1].number - sorted[0].number;
+if (range < tiles.length && range === sorted.length - 1 + jokers.length) return true;
+}
+return false;
+}
+
+function groupFloatingTiles() {
+const selectedTiles = turnState.floatingTiles.filter(t => turnState.selectedTileIds.includes(t.id));
+if (validateSet(selectedTiles)) {
+turnState.boardSets.push(selectedTiles);
+turnState.floatingTiles = turnState.floatingTiles.filter(t => !turnState.selectedTileIds.includes(t.id));
+turnState.selectedTileIds = [];
+renderTurnState();
+} else {
+statusMessage.textContent = '所选牌无法组成有效牌组！';
+}
+}
+
+function resetTurn() {
+processTurn();
+}
+
+function confirmTurn() {
+if (turnState.floatingTiles.length > 0 && !turnState.boardTilesTouched) {
+if (validateSet(turnState.floatingTiles)) {
+turnState.boardSets.push([...turnState.floatingTiles]);
+turnState.floatingTiles = [];
+} else {
+statusMessage.textContent = '您选择的牌无法直接组成有效牌组，请使用“组成牌组”或“重置回合”。';
+return;
+}
+}
+if (turnState.floatingTiles.length > 0) {
+statusMessage.textContent = '临时操作区还有未分组的牌，请先完成操作。';
+return;
+}
+for (const set of turnState.boardSets) {
+if (!validateSet(set)) {
+statusMessage.textContent = '桌面存在不合法的牌组，请检查。';
+return;
+}
+}
+const originalRackIdSet = new Set(turnState.originalRack.map(t => t.id));
+const finalBoardIdSet = new Set(turnState.boardSets.flat().map(t => t.id));
+let handTileIsOnBoard = false;
+for (const id of originalRackIdSet) {
+if (finalBoardIdSet.has(id)) {
+handTileIsOnBoard = true;
+break;
+}
+}
+const boardIsUnchanged = JSON.stringify(turnState.boardSets.map(s => s.map(t=>t.id).sort((a,b)=>a-b)).sort()) === JSON.stringify(turnState.originalBoardSets.map(s => s.map(t=>t.id).sort((a,b)=>a-b)).sort());
+const rackIsUnchanged = turnState.rack.length === turnState.originalRack.length;
+if (boardIsUnchanged && rackIsUnchanged) {
+statusMessage.textContent = '您没有做出任何有效出牌。请重置或摸牌。';
+return;
+}
+if (!handTileIsOnBoard) {
+statusMessage.textContent = '您必须使用至少一张手牌来改变桌面布局。';
+return;
+}
+const humanPlayer = gameState.players[0];
+gameState.boardSets = turnState.boardSets;
+humanPlayer.rack = turnState.rack;
+sortTiles(humanPlayer.rack);
+if (humanPlayer.rack.length === 0) {
+gameState.isGameOver = true;
+updateUIForTurn();
+return;
+}
+gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+processTurn();
+}
+
+function drawAndEndTurn() {
+if (JSON.stringify(turnState.boardSets) !== JSON.stringify(turnState.originalBoardSets) || turnState.rack.length !== turnState.originalRack.length) {
+statusMessage.textContent = '您已对牌局做出改动，请先重置回合再摸牌。';
+return;
+}
+const player = gameState.players[gameState.currentPlayerIndex];
+if (gameState.tilePool.length > 0) {
+const drawnTile = gameState.tilePool.pop();
+player.rack.push(drawnTile);
+sortTiles(player.rack);
+gameState.lastDrawnTileId = drawnTile.id;
+statusMessage.textContent = `您摸了一张牌，回合结束`;
+} else {
+statusMessage.textContent = '牌池已空，无法摸牌';
+}
+gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+updateUIForTurn();
+setTimeout(processTurn, 1200);
+}
+
+function findHintsForTurn() {
+const hints = [];
+const rack = turnState.rack;
+const boardSets = turnState.boardSets;
+for (let k = rack.length; k >= 3; k--) {
+const combinations = getCombinations(rack, k);
+for (const combo of combinations) {
+if (validateSet(combo)) {
+hints.push({ type: 'new_set', tiles: combo });
+}
+}
+}
+for (const tile of rack) {
+for (let i = 0; i < boardSets.length; i++) {
+const tempSet = [...boardSets[i], tile];
+if (validateSet(tempSet)) {
+hints.push({ type: 'add_to_set', tiles: [tile], targetSetIndex: i });
+}
+}
+}
+hints.sort((a, b) => b.tiles.length - a.tiles.length);
+return hints;
+}
+
+function handleHintClick() {
+const hints = findHintsForTurn();
+if (hints.length > 0) {
+const bestHint = hints[0];
+const hintTileIds = bestHint.tiles.map(t => t.id);
+turnState.rack = turnState.rack.filter(t => !hintTileIds.includes(t.id));
+turnState.floatingTiles.push(...bestHint.tiles);
+sortTiles(turnState.floatingTiles);
+statusMessage.textContent = '提示：已将建议牌组移动到操作区。';
+renderTurnState();
+} else {
+statusMessage.textContent = '未找到可出的牌，建议摸牌。';
+}
+}
+
+function executeNpcTurn() {
+const npc = gameState.players[gameState.currentPlayerIndex];
+let played = false;
+const combinations = getCombinations(npc.rack, 3);
+for (const combo of combinations) {
+if (validateSet(combo)) {
+npc.rack = npc.rack.filter(t => !combo.some(ct => ct.id === t.id));
+gameState.boardSets.push(combo);
+statusMessage.textContent = `电脑玩家 ${npc.id + 1} 打出一组新牌`;
+played = true;
+break;
+}
+}
+if (!played) {
+if (gameState.tilePool.length > 0) {
+const tile = gameState.tilePool.pop();
+npc.rack.push(tile);
+statusMessage.textContent = `电脑玩家 ${npc.id + 1} 摸了一张牌`;
+} else {
+statusMessage.textContent = `电脑玩家 ${npc.id + 1} 无法行动`;
+}
+}
+if (npc.rack.length === 0) gameState.isGameOver = true;
+updateUIForTurn();
+if (gameState.isGameOver) return;
+setTimeout(() => {
+gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+processTurn();
+}, 50);
+}
+
+function getCombinations(arr, k) {
+if (k > arr.length || k <= 0) return [];
+if (k === 1) return arr.map(e => [e]);
+const combs = [];
+arr.forEach((e, i) => {
+const head = arr.slice(i, i + 1);
+const tailcombs = getCombinations(arr.slice(i + 1), k - 1);
+tailcombs.forEach(tc => combs.push(head.concat(tc)));
+});
+return combs;
+}
+
+function initializeGame(playerCount) {
+gameState = {
+players: [], boardSets: [], tilePool: createTilePool(), currentPlayerIndex: 0, isGameOver: false, lastDrawnTileId: null,
+};
+shuffle(gameState.tilePool);
+for (let i = 0; i < playerCount; i++) {
+const player = { id: i, rack: [], isNpc: i !== 0 };
+for (let j = 0; j < 14; j++) {
+if (gameState.tilePool.length > 0) player.rack.push(gameState.tilePool.pop());
+}
+sortTiles(player.rack);
+gameState.players.push(player);
+}
+setupScreen.style.display = 'none';
+gameContainer.style.display = 'flex';
+processTurn();
+}
+
+playerCountSelector.addEventListener('click', (e) => {
+if (e.target.classList.contains('player-count-option')) {
+document.querySelectorAll('.player-count-option').forEach(opt => opt.classList.remove('selected'));
+e.target.classList.add('selected');
+startGameButton.disabled = false;
+startGameButton.dataset.count = e.target.dataset.count;
+}
+});
+startGameButton.addEventListener('click', () => {
+const count = parseInt(startGameButton.dataset.count, 10);
+if (count) initializeGame(count);
+});
+hintButton.addEventListener('click', handleHintClick);
+groupButton.addEventListener('click', groupFloatingTiles);
+resetTurnButton.addEventListener('click', resetTurn);
+confirmTurnButton.addEventListener('click', confirmTurn);
+drawButton.addEventListener('click', drawAndEndTurn);
+rulesButton.addEventListener('click', () => { rulesModal.style.display = 'block'; });
+closeRulesButton.addEventListener('click', () => { rulesModal.style.display = 'none'; });
+window.addEventListener('click', (event) => { if (event.target == rulesModal) rulesModal.style.display = 'none'; });
+</script>
+</body>
+</html>
