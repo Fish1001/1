@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时尚对话框配色方案合集</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+color: #fff;
+min-height: 100vh;
+padding: 40px 20px;
+}
+.container {
+max-width: 1200px;
+margin: 0 auto;
+}
+header {
+text-align: center;
+margin-bottom: 50px;
+padding: 20px;
+background: rgba(0, 0, 0, 0.3);
+border-radius: 15px;
+backdrop-filter: blur(10px);
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+h1 {
+font-size: 3.5rem;
+margin-bottom: 15px;
+text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+background: linear-gradient(45deg, #ff8a00, #e52e71, #22c1c3);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.subtitle {
+font-size: 1.2rem;
+opacity: 0.9;
+max-width: 700px;
+margin: 0 auto;
+line-height: 1.6;
+}
+.color-schemes {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 30px;
+}
+.scheme {
+background: rgba(255, 255, 255, 0.1);
+border-radius: 15px;
+padding: 25px;
+text-align: center;
+transition: transform 0.3s, box-shadow 0.3s;
+backdrop-filter: blur(10px);
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+cursor: pointer;
+}
+.scheme:hover {
+transform: translateY(-10px);
+box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+.scheme-title {
+font-size: 1.4rem;
+margin-bottom: 15px;
+font-weight: 600;
+}
+.color-preview {
+display: flex;
+height: 100px;
+border-radius: 10px;
+overflow: hidden;
+margin-bottom: 20px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.color {
+flex: 1;
+}
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.6);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(5px);
+animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+.modal-content {
+position: relative;
+padding: 30px;
+border-radius: 20px;
+width: 90%;
+max-width: 500px;
+text-align: center;
+box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+transform: scale(0.95);
+opacity: 0;
+transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.modal-overlay.active {
+display: flex;
+}
+.modal-overlay.active .modal-content {
+transform: scale(1);
+opacity: 1;
+}
+.modal-title {
+font-size: 2rem;
+margin-bottom: 15px;
+font-weight: 600;
+}
+.modal-text {
+font-size: 1.1rem;
+line-height: 1.6;
+opacity: 0.9;
+margin-bottom: 30px;
+}
+.modal-buttons {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 15px;
+}
+.modal-btn {
+border: 2px solid transparent;
+padding: 12px 25px;
+border-radius: 8px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.modal-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.modal-btn-secondary {
+background-color: transparent;
+}
+.modal-close {
+position: absolute;
+top: 15px;
+right: 15px;
+background: none;
+border: none;
+font-size: 1.8rem;
+cursor: pointer;
+transition: transform 0.2s, color 0.2s;
+line-height: 1;
+padding: 5px;
+}
+.modal-close:hover {
+transform: rotate(90deg);
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>时尚对话框配色方案合集</h1>
+<p class="subtitle">点击任意卡片预览效果，并一键复制色彩代码。</p>
+</header>
+<div class="color-schemes" id="color-schemes-container">
+</div>
+</div>
+<div id="demo-modal" class="modal-overlay">
+<div class="modal-content">
+<button id="modal-close-btn" class="modal-close">&times;</button>
+<h2 id="modal-title-text" class="modal-title">对话框标题</h2>
+<p id="modal-body-text" class="modal-text">这是一个对话框示例，展示了当前配色方案的实际应用效果。点击下方按钮与对话框交互。</p>
+<div class="modal-buttons">
+<button id="modal-secondary-btn" class="modal-btn modal-btn-secondary">取消</button>
+<button id="modal-copy-btn" class="modal-btn modal-btn-secondary">复制配色</button>
+<button id="modal-primary-btn" class="modal-btn">确认</button>
+</div>
+</div>
+</div>
+<script>
+// --- 配色方案数据中心 ---
+// 所有配色方案都在这里定义。您可以随意添加、删除或修改。
+const allColorSchemes = [
+{ title: '霓虹蓝粉', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#FF00E6', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FCE4EC', '#FF00E6', '#333333'] },
+{ title: '活力橙黄', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#FFD000', btnTextColor: '#333333', previewColors: ['#FFFFFF', '#FFF3E0', '#FFD000', '#333333'] },
+{ title: '柔粉深红', bgColor: '#FFFFFF', textColor: '#4A4A4A', btnBgColor: '#D32F2F', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FFEBEE', '#D32F2F', '#4A4A4A'] },
+{ title: '静谧深蓝', bgColor: '#FFFFFF', textColor: '#37474F', btnBgColor: '#1976D2', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E3F2FD', '#1976D2', '#37474F'] },
+{ title: '清新薄荷', bgColor: '#FFFFFF', textColor: '#263238', btnBgColor: '#2E7D32', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E8F5E9', '#2E7D32', '#263238'] },
+{ title: '极简黑蓝', bgColor: '#FFFFFF', textColor: '#263238', btnBgColor: '#0D47A1', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F5F5F5', '#0D47A1', '#263238'] },
+{ title: '暖调焦糖', bgColor: '#FFFFFF', textColor: '#424242', btnBgColor: '#E65100', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FFF3E0', '#E65100', '#424242'] },
+{ title: '浪漫粉紫', bgColor: '#FFFFFF', textColor: '#4A4A4A', btnBgColor: '#C2185B', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F3E5F5', '#C2185B', '#4A4A4A'] },
+{ title: '青柠绿', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#7CFC00', btnTextColor: '#333333', previewColors: ['#FFFFFF', '#F1F8E9', '#7CFC00', '#333333'] },
+{ title: '冷调高级灰', bgColor: '#FFFFFF', textColor: '#4A4A4A', btnBgColor: '#2196F3', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E3F2FD', '#2196F3', '#4A4A4A'] },
+{ title: '珊瑚红', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#FF6B6B', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FFEBEE', '#FF6B6B', '#333333'] },
+{ title: '蓝橙撞色', bgColor: '#FFFFFF', textColor: '#37474F', btnBgColor: '#FFA000', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FFF3E0', '#FFA000', '#37474F'] },
+{ title: '复古黄蓝', bgColor: '#FFFFFF', textColor: '#3E2723', btnBgColor: '#1565C0', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E3F2FD', '#1565C0', '#3E2723'] },
+{ title: '甜酷玫红', bgColor: '#FFFFFF', textColor: '#263238', btnBgColor: '#E91E63', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FCE4EC', '#E91E63', '#263238'] },
+{ title: '森林绿', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#3CB371', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E8F5E9', '#3CB371', '#333333'] },
+{ title: '深空紫', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#7B68EE', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#EDE7F6', '#7B68EE', '#333333'] },
+{ title: '简约白', bgColor: '#FFFFFF', textColor: '#333333', btnBgColor: '#6c757d', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E9ECEF', '#6C757D', '#333333'] },
+{ title: '商务蓝', bgColor: '#FFFFFF', textColor: '#004085', btnBgColor: '#007bff', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E7F3FF', '#007BFF', '#004085'] },
+{ title: '成功绿', bgColor: '#FFFFFF', textColor: '#155724', btnBgColor: '#28a745', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#D4EDDA', '#28A745', '#155724'] },
+{ title: '警告红', bgColor: '#FFFFFF', textColor: '#721c24', btnBgColor: '#dc3545', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F8D7DA', '#DC3545', '#721C24'] },
+{ title: '提示黄', bgColor: '#FFFFFF', textColor: '#856404', btnBgColor: '#ffc107', btnTextColor: '#212529', previewColors: ['#FFFFFF', '#FFF3CD', '#FFC107', '#856404'] },
+{ title: '信息蓝', bgColor: '#FFFFFF', textColor: '#0c5460', btnBgColor: '#17a2b8', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#D1ECF1', '#17A2B8', '#0C5460'] },
+{ title: '暗夜黑', bgColor: '#FFFFFF', textColor: '#343a40', btnBgColor: '#007bff', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#6c757d', '#007bff', '#343a40'] },
+{ title: '科技紫', bgColor: '#FFFFFF', textColor: '#3d2b56', btnBgColor: '#6f42c1', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E2D9F3', '#6F42C1', '#3D2B56'] },
+{ title: '阳光橙', bgColor: '#FFFFFF', textColor: '#8c5827', btnBgColor: '#fd7e14', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FFE8D1', '#FD7E14', '#8C5827'] },
+{ title: '宁静青', bgColor: '#FFFFFF', textColor: '#16594c', btnBgColor: '#20c997', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#D0F0E8', '#20C997', '#16594C'] },
+{ title: '优雅粉', bgColor: '#FFFFFF', textColor: '#7d234a', btnBgColor: '#e83e8c', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FDDFEB', '#E83E8C', '#7D234A'] },
+{ title: '大地棕', bgColor: '#FFFFFF', textColor: '#5c4d42', btnBgColor: '#8B4513', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F0E9E2', '#8B4513', '#5C4D42'] },
+{ title: '水墨灰', bgColor: '#FFFFFF', textColor: '#212529', btnBgColor: '#343a40', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F8F9FA', '#343A40', '#212529'] },
+{ title: '青花瓷', bgColor: '#FFFFFF', textColor: '#174A7C', btnBgColor: '#2582D3', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#EAF6FF', '#2582D3', '#174A7C'] },
+{ title: '胭脂红', bgColor: '#FFFFFF', textColor: '#7a1b35', btnBgColor: '#D93A64', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FDE8ED', '#D93A64', '#7A1B35'] },
+{ title: '抹茶绿', bgColor: '#FFFFFF', textColor: '#33691e', btnBgColor: '#8bc34a', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F1F8E9', '#8BC34A', '#33691E'] },
+{ title: '玫瑰金', bgColor: '#FFFFFF', textColor: '#5E4949', btnBgColor: '#B76E79', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F7CAC9', '#B76E79', '#5E4949'] },
+{ title: '鼠尾草绿', bgColor: '#FFFFFF', textColor: '#4F5D54', btnBgColor: '#8A9A5B', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E2E8DE', '#8A9A5B', '#4F5D54'] },
+{ title: '丁香紫', bgColor: '#FFFFFF', textColor: '#544760', btnBgColor: '#C8A2C8', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#E6E6FA', '#C8A2C8', '#544760'] },
+{ title: '电光蓝', bgColor: '#FFFFFF', textColor: '#002D62', btnBgColor: '#7DF9FF', btnTextColor: '#002D62', previewColors: ['#FFFFFF', '#E0FFFF', '#7DF9FF', '#002D62'] },
+{ title: '赤陶色', bgColor: '#FFFFFF', textColor: '#6E260E', btnBgColor: '#E2725B', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#FAD6A5', '#E2725B', '#6E260E'] },
+{ title: '经典蓝', bgColor: '#FFFFFF', textColor: '#0F4C81', btnBgColor: '#0F4C81', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#A9CCE3', '#0F4C81', '#FFFFFF'] },
+{ title: '石榴红', bgColor: '#FFFFFF', textColor: '#4A0404', btnBgColor: '#C0392B', btnTextColor: '#FFFFFF', previewColors: ['#FFFFFF', '#F5B7B1', '#C0392B', '#4A0404'] },
+{ title: '芥末黄', bgColor: '#FFFFFF', textColor: '#4C4600', btnBgColor: '#FFDB58', btnTextColor: '#4C4600', previewColors: ['#FFFFFF', '#FFFACD', '#FFDB58', '#4C4600'] }
+];
+
+// --- 配色方案排序 ---
+function hexToHsl(hex) {
+const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+let r = parseInt(result[1], 16) / 255;
+let g = parseInt(result[2], 16) / 255;
+let b = parseInt(result[3], 16) / 255;
+const max = Math.max(r, g, b), min = Math.min(r, g, b);
+let h, s, l = (max + min) / 2;
+if (max === min) {
+h = s = 0;
+} else {
+const d = max - min;
+s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+switch (max) {
+case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+case g: h = (b - r) / d + 2; break;
+case b: h = (r - g) / d + 4; break;
+}
+h /= 6;
+}
+return { h: h * 360, s: s, l: l };
+}
+allColorSchemes.sort((a, b) => {
+const hslA = hexToHsl(a.btnBgColor);
+const hslB = hexToHsl(b.btnBgColor);
+const isAGray = hslA.s < 0.1;
+const isBGray = hslB.s < 0.1;
+if (isAGray && !isBGray) return 1;
+if (!isAGray && isBGray) return -1;
+if (isAGray && isBGray) return hslA.l - hslB.l;
+if (Math.abs(hslA.h - hslB.h) < 10) {
+if (Math.abs(hslA.s - hslB.s) < 0.1) {
+return hslA.l - hslB.l;
+}
+return hslA.s - hslB.s;
+}
+return hslA.h - hslB.h;
+});
+
+// --- 动态生成卡片 ---
+document.addEventListener('DOMContentLoaded', () => {
+const container = document.getElementById('color-schemes-container');
+let schemesHTML = '';
+allColorSchemes.forEach(scheme => {
+const previewHTML = scheme.previewColors.map(color => `<div class="color" style="background-color: ${color};"></div>`).join('');
+const schemeData = JSON.stringify(scheme.previewColors).replace(/"/g, "'");
+schemesHTML += `
+<div class="scheme" onclick="showModal('${scheme.title}', '${scheme.bgColor}', '${scheme.textColor}', '${scheme.btnBgColor}', '${scheme.btnTextColor}', ${schemeData})">
+<h3 class="scheme-title">${scheme.title}</h3>
+<div class="color-preview">${previewHTML}</div>
+</div>
+`;
+});
+container.innerHTML = schemesHTML;
+});
+
+const modal = document.getElementById('demo-modal');
+const modalContent = modal.querySelector('.modal-content');
+const modalTitle = document.getElementById('modal-title-text');
+const modalText = document.getElementById('modal-body-text');
+const primaryBtn = document.getElementById('modal-primary-btn');
+const secondaryBtn = document.getElementById('modal-secondary-btn');
+const closeBtn = document.getElementById('modal-close-btn');
+const copyBtn = document.getElementById('modal-copy-btn');
+let currentSchemeToCopy = '';
+function showModal(title, bgColor, textColor, btnBgColor, btnTextColor, previewColors) {
+modalContent.style.backgroundColor = bgColor;
+modalTitle.style.color = textColor;
+modalText.style.color = textColor;
+closeBtn.style.color = textColor;
+primaryBtn.style.backgroundColor = btnBgColor;
+primaryBtn.style.color = btnTextColor;
+primaryBtn.style.borderColor = btnBgColor;
+secondaryBtn.style.borderColor = btnBgColor;
+secondaryBtn.style.color = btnBgColor;
+copyBtn.style.borderColor = btnBgColor;
+copyBtn.style.color = btnBgColor;
+modalTitle.textContent = title;
+currentSchemeToCopy = `
+/* 配色方案: ${title} */
+.dialog-background { background-color: ${bgColor}; }
+.dialog-text { color: ${textColor}; }
+.primary-button { background-color: ${btnBgColor}; color: ${btnTextColor}; }
+.secondary-button { border-color: ${btnBgColor}; color: ${btnBgColor}; }
+/* 预览色块: ${previewColors.join(', ')} */
+`.trim();
+modal.classList.add('active');
+}
+function closeModal() {
+modal.classList.remove('active');
+}
+copyBtn.addEventListener('click', () => {
+if (!navigator.clipboard) {
+alert('您的浏览器不支持复制功能');
+return;
+}
+navigator.clipboard.writeText(currentSchemeToCopy).then(() => {
+const originalText = copyBtn.textContent;
+copyBtn.textContent = '已复制';
+copyBtn.style.backgroundColor = copyBtn.style.color;
+copyBtn.style.color = modalContent.style.backgroundColor;
+setTimeout(() => {
+copyBtn.textContent = originalText;
+copyBtn.style.backgroundColor = 'transparent';
+copyBtn.style.color = copyBtn.style.borderColor;
+}, 1500);
+}).catch(err => {
+console.error('复制失败: ', err);
+alert('复制失败，请查看控制台');
+});
+});
+modal.addEventListener('click', function(event) {
+if (event.target === modal) {
+closeModal();
+}
+});
+closeBtn.addEventListener('click', closeModal);
+primaryBtn.addEventListener('click', closeModal);
+secondaryBtn.addEventListener('click', closeModal);
+</script>
+</body>
+</html>
