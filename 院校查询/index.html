@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全国院校信息查询系统</title>
+<style>
+:root {
+--primary-color: #0056b3;
+--secondary-color: #f0f8ff;
+--font-color: #333;
+--border-color: #ddd;
+--shadow-color: rgba(0, 0, 0, 0.1);
+--card-bg: #ffffff;
+--gongban-bg: #ffebee;
+--gongban-text: #c62828;
+--minban-bg: #e8f5e9;
+--minban-text: #2e7d32;
+--benke-bg: #fff3e0;
+--benke-text: #e65100;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+background-color: #f4f7f9;
+color: var(--font-color);
+line-height: 1.6;
+}
+.container {
+max-width: 1200px;
+margin: 2rem auto;
+padding: 2rem;
+}
+header {
+text-align: center;
+margin-bottom: 2.5rem;
+}
+header h1 {
+font-size: 2.5rem;
+color: var(--primary-color);
+font-weight: 600;
+}
+.search-box {
+display: flex;
+width: 100%;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 4px 15px var(--shadow-color);
+}
+#school-input {
+flex-grow: 1;
+border: none;
+padding: 1rem 1.2rem;
+font-size: 1.1rem;
+outline: none;
+}
+#search-btn {
+border: none;
+background-color: var(--primary-color);
+color: white;
+padding: 0 2rem;
+font-size: 1.1rem;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+#search-btn:hover {
+background-color: #004494;
+}
+.results-container {
+margin-top: 2rem;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+gap: 1.5rem;
+opacity: 0;
+transform: translateY(20px);
+transition: opacity 0.5s ease, transform 0.5s ease;
+max-height: 70vh;
+overflow-y: auto;
+}
+.result-card {
+background-color: var(--card-bg);
+border-radius: 8px;
+padding: 2rem 1.5rem;
+box-shadow: 0 4px 15px var(--shadow-color);
+border: 1px solid var(--border-color);
+}
+.result-item {
+display: flex;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+.result-item:last-child {
+margin-bottom: 0;
+}
+.result-item strong {
+flex-shrink: 0;
+width: 90px;
+color: #555;
+font-weight: 600;
+font-size: 18px;
+}
+.result-item span {
+font-size: 18px;
+}
+.school-name-heading {
+font-size: 2rem;
+font-weight: bold;
+color: var(--primary-color);
+margin-bottom: 1.5rem;
+border-bottom: 2px solid var(--secondary-color);
+padding-bottom: 1rem;
+}
+.tag {
+display: inline-flex;
+align-items: center;
+background-color: var(--secondary-color);
+color: var(--primary-color);
+padding: 0.2rem 0.6rem;
+border-radius: 4px;
+font-size: 0.9rem;
+font-weight: 500;
+transition: all 0.2s ease;
+white-space: nowrap;
+}
+.tag-gongban {
+background-color: var(--gongban-bg);
+color: var(--gongban-text);
+}
+.tag-minban {
+background-color: var(--minban-bg);
+color: var(--minban-text);
+}
+.tag-benke {
+background-color: var(--benke-bg);
+color: var(--benke-text);
+}
+.tags-list {
+display: inline-flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 0.5rem;
+}
+
+footer {
+text-align: center;
+margin-top: 3rem;
+color: #999;
+font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>全国院校信息查询系统</h1>
+</header>
+<main>
+<div class="search-box">
+<input type="text" id="school-input" placeholder="请输入院校全称或简称，如：北京大学 或 北大">
+<button id="search-btn">查询</button>
+</div>
+<div id="results" class="results-container">
+<!-- 查询结果将动态插入此处 -->
+</div>
+</main>
+<footer>
+<p>以上数据由 南京福久教育信息咨询服务有限公司 Fish 整理，仅供参考！</p>
+</footer>
+</div>
+
+<script src="./college.js"></script>
+
+<script>
+const schoolInput = document.getElementById('school-input');
+const searchBtn = document.getElementById('search-btn');
+const resultsContainer = document.getElementById('results');
+
+function searchSchool() {
+const query = schoolInput.value.trim();
+if (!query) {
+hideResults();
+return;
+}
+if (typeof collegeData === 'undefined') {
+displayNotFound("数据文件加载失败，请检查 college.js 文件是否正确。");
+return;
+}
+const schools = collegeData.filter(s => s.school_name.includes(query));
+if (schools.length > 0) {
+displayAllResults(schools);
+} else {
+displayNotFound(`未查询到“${query}”`);
+}
+}
+
+function displayAllResults(schools) {
+const allResultsHtml = schools.map(school => {
+const tags = [];
+if (school.f985 === '1') {
+tags.push('985');
+}
+if (school.f211 === '1') {
+tags.push('211');
+}
+if (school.dual_class_name && school.dual_class_name.trim() !== '') {
+tags.push(school.dual_class_name);
+}
+if (school.school_type_name) {
+tags.push(school.school_type_name);
+}
+if (tags.length === 0) {
+tags.push('普通院校');
+}
+const tagsHtml = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+const tagsListClass = tags.length > 3 ? 'js-check-shrink' : '';
+
+let typeNameHtml = school.type_name;
+if (school.type_name === '公办') {
+typeNameHtml = `<span class="tag tag-gongban">${school.type_name}</span>`;
+} else if (school.type_name === '民办') {
+typeNameHtml = `<span class="tag tag-minban">${school.type_name}</span>`;
+}
+let levelNameHtml = school.level_name;
+if (school.level_name === '本科') {
+levelNameHtml = `<span class="tag tag-benke">${school.level_name}</span>`;
+}
+return `
+<div class="result-card">
+<h2 class="school-name-heading">${school.school_name}</h2>
+<div class="result-item">
+<strong>办学类型：</strong>
+<span>${typeNameHtml}</span>
+</div>
+<div class="result-item">
+<strong>院校层次：</strong>
+<span>${levelNameHtml}</span>
+</div>
+<div class="result-item">
+<strong>院校标签：</strong>
+<span class="tags-list ${tagsListClass}">${tagsHtml}</span>
+</div>
+</div>
+`;
+}).join('');
+
+resultsContainer.innerHTML = allResultsHtml;
+resultsContainer.style.display = 'grid';
+
+setTimeout(() => {
+resultsContainer.style.opacity = '1';
+resultsContainer.style.transform = 'translateY(0)';
+checkAndApplyTagShrink();
+}, 10);
+}
+
+function checkAndApplyTagShrink() {
+const containersToCheck = resultsContainer.querySelectorAll('.js-check-shrink');
+containersToCheck.forEach(container => {
+const tags = container.querySelectorAll('.tag');
+if (tags.length === 0) return;
+if (container.offsetHeight <= tags[0].offsetHeight) {
+return;
+}
+const nonTextWidth = (() => {
+const numGaps = tags.length > 1 ? tags.length - 1 : 0;
+const gapWidth = parseFloat(window.getComputedStyle(container).gap);
+const totalGapWidth = numGaps * gapWidth;
+let totalPaddingWidth = 0;
+tags.forEach(tag => {
+const tagStyle = window.getComputedStyle(tag);
+totalPaddingWidth += parseFloat(tagStyle.paddingLeft) + parseFloat(tagStyle.paddingRight);
+});
+return totalGapWidth + totalPaddingWidth;
+})();
+const availableWidth = container.clientWidth;
+container.style.flexWrap = 'nowrap';
+const requiredWidth = container.scrollWidth;
+container.style.flexWrap = '';
+if (requiredWidth <= availableWidth) return;
+const requiredTextWidth = requiredWidth - nonTextWidth;
+const targetTextWidth = availableWidth - nonTextWidth;
+if (targetTextWidth <= 0 || requiredTextWidth <= 0) {
+container.style.flexWrap = 'nowrap';
+container.style.overflow = 'hidden';
+return;
+}
+const textScaleFactor = (targetTextWidth / requiredTextWidth) * 0.99;
+const defaultFontSize = parseFloat(window.getComputedStyle(tags[0]).fontSize);
+const newFontSize = defaultFontSize * textScaleFactor;
+const minFontSize = 9;
+const finalFontSize = Math.max(newFontSize, minFontSize);
+container.style.flexWrap = 'nowrap';
+tags.forEach(tag => {
+tag.style.fontSize = `${finalFontSize}px`;
+});
+if (container.scrollWidth > container.clientWidth) {
+container.style.overflow = 'hidden';
+}
+});
+}
+
+function displayNotFound(message) {
+resultsContainer.innerHTML = `
+<div class="result-card">
+<h2 class="school-name-heading">${message}</h2>
+<p>请检查您输入的院校名称是否正确，或尝试使用更完整的名称进行查询。</p>
+</div>
+`;
+resultsContainer.style.display = 'grid';
+setTimeout(() => {
+resultsContainer.style.opacity = '1';
+resultsContainer.style.transform = 'translateY(0)';
+}, 10);
+}
+
+function hideResults() {
+resultsContainer.style.opacity = '0';
+resultsContainer.style.transform = 'translateY(20px)';
+setTimeout(() => {
+resultsContainer.style.display = 'none';
+}, 500);
+}
+
+searchBtn.addEventListener('click', searchSchool);
+schoolInput.addEventListener('keydown', (event) => {
+if (event.key === 'Enter') {
+searchSchool();
+}
+});
+</script>
+</body>
+</html>
