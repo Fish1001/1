@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福久公考 - 公务员考试培训视频</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#165DFF',
+secondary: '#FF7D00',
+dark: '#1D2939',
+light: '#F9FAFB',
+'primary-light': '#E8F3FF'
+},
+fontFamily: {
+inter: ['Inter', 'sans-serif'],
+},
+},
+}
+}</script>
+<style type="text/tailwindcss">@layer utilities {
+.content-auto {
+content-visibility: auto;
+}
+.text-shadow {
+text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.card-hover {
+transition: all 0.3s ease;
+}
+.card-hover:hover {
+transform: translateY(-5px);
+}
+.gradient-overlay {
+background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+}
+}</style>
+<style>.fade-in {
+animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+.slide-up {
+animation: slideUp 0.5s ease-out;
+}
+@keyframes slideUp {
+from { transform: translateY(20px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+.video-card {
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.video-<|card|>:hover {
+transform: translateY(-6px);
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.video-card .play-button {
+transition: all 0.3s ease;
+transform: scale(0.9);
+opacity: 0;
+}
+.video-<|card|>:hover .play-button {
+transform: scale(1);
+opacity: 1;
+}
+html {
+scroll-behavior: smooth;
+}
+.nav-scrolled {
+background-color: rgba(255, 255, 255, 0.95);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.modal-enter {
+animation: modalEnter 0.3s forwards;
+}
+@keyframes modalEnter {
+from { opacity: 0; transform: scale(0.95); }
+to { opacity: 1; transform: scale(1); }
+}
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+background: #165DFF;
+border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: #0f4bda;
+}</style>
+</head>
+<body class="font-inter text-dark bg-light">
+<header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center py-4">
+<a href="#" class="flex items-center space-x-2">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+<i class="fa fa-graduation-cap text-white text-xl"></i>
+</div>
+<span class="text-xl font-bold text-dark">福久公考</span>
+</a>
+<nav class="hidden md:flex items-center space-x-8">
+<a href="#home" class="font-medium text-primary hover:text-primary/80 transition-colors">首页</a>
+<a href="#courses" class="font-medium text-dark hover:text-primary transition-colors">视频课程</a>
+<a href="#about" class="font-medium text-dark hover:text-primary transition-colors">关于我们</a>
+<a href="#instructors" class="font-medium text-dark hover:text-primary transition-colors">讲师团队</a>
+<a href="#testimonials" class="font-medium text-dark hover:text-primary transition-colors">学员评价</a>
+<a href="#contact" class="font-medium text-dark hover:text-primary transition-colors">联系我们</a>
+</nav>
+<button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
+<i class="fa fa-bars text-xl"></i>
+</button>
+</div>
+</div>
+<div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+<div class="container mx-auto px-4 py-3 space-y-3">
+<a href="#home" class="block py-2 font-medium text-primary">首页</a>
+<a href="#courses" class="block py-2 font-medium text-dark hover:text-primary">视频课程</a>
+<a href="#about" class="block py-2 font-medium text-dark hover:text-primary">关于我们</a>
+<a href="#instructors" class="block py-2 font-medium text-dark hover:text-primary">讲师团队</a>
+<a href="#testimonials" class="block py-2 font-medium text-dark hover:text-primary">学员评价</a>
+<a href="#contact" class="block py-2 font-medium text-dark hover:text-primary">联系我们</a>
+<div class="flex space-x-4 pt-2 border-t">
+<a href="#" class="flex-1 px-4 py-2 text-center text-primary font-medium">登录</a>
+<a href="#" class="flex-1 px-4 py-2 text-center bg-primary text-white rounded-lg font-medium">注册</a>
+</div>
+</div>
+</div>
+</header>
+<section id="home" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-primary-light to-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row items-center">
+<div class="md:w-1/2 mb-10 md:mb-0 slide-up">
+<h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark mb-4">
+公务员考试<br />
+<span class="text-primary">视频学习平台</span>
+</h1>
+<p class="text-lg text-gray-600 mb-8 max-w-xl">
+福久公考重磅推出高品质公务员考试培训视频，集结资深讲师天团匠心打造！全科目覆盖、重难点拆解，赋能高效备考，助力考生成功上岸！
+</p>
+<div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+<a href="#courses" class="px-6 py-3 bg-primary text-white rounded-lg font-medium text-center hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl">
+浏览视频课程
+</a>
+<a href="#contact" class="px-6 py-3 bg-white text-primary border border-primary rounded-lg font-medium text-center hover:bg-primary-light transition-colors">
+联系我们
+</a>
+</div>
+<div class="flex flex-wrap gap-8 mt-12">
+<div class="text-center">
+<div class="text-3xl font-bold text-primary mb-1">10+</div>
+<div class="text-gray-600">精品视频课程</div>
+</div>
+<div class="text-center">
+<div class="text-3xl font-bold text-primary mb-1">98%</div>
+<div class="text-gray-600">学员满意度</div>
+</div>
+<div class="text-center">
+<div class="text-3xl font-bold text-primary mb-1">50k+</div>
+<div class="text-gray-600">学员总数</div>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 relative fade-in">
+<div class="relative rounded-xl overflow-hidden shadow-2xl">
+<img src="https://picsum.photos/800/500" alt="公务员考试培训" class="w-full h-auto">
+<div class="absolute inset-0 gradient-overlay flex items-center justify-center">
+<button class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white text-white hover:bg-white/30 transition-all" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-3xl"></i>
+</button>
+</div>
+<div class="absolute bottom-4 right-4 bg-black/70 text-white text-sm px-2 py-1 rounded">
+08:45
+</div>
+</div>
+<div class="absolute -top-6 -left-6 w-24 h-24 bg-secondary/20 rounded-full blur-2xl"></div>
+<div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+</div>
+</div>
+</div>
+</section>
+<section id="courses" class="py-16 md:py-24 bg-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
+精品视频课程
+</h2>
+<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+精挑细选公务员考试核心培训视频，全面覆盖行测、申论等全科目，精准直击高频考点与备考难点。助力考生构建系统知识体系，掌握科学解题技巧，实现稳步上岸！</p>
+</div>
+<div class="flex flex-wrap justify-center gap-4 mb-12">
+<button class="filter-btn px-6 py-2 bg-primary text-white rounded-full font-medium" data-category="all">
+全部课程
+</button>
+<button class="filter-btn px-6 py-2 bg-gray-100 text-dark rounded-full font-medium hover:bg-gray-200 transition-colors" data-category="行测">
+行测
+</button>
+<button class="filter-btn px-6 py-2 bg-gray-100 text-dark rounded-full font-medium hover:bg-gray-200 transition-colors" data-category="申论">
+申论
+</button>
+<button class="filter-btn px-6 py-2 bg-gray-100 text-dark rounded-full font-medium hover:bg-gray-200 transition-colors" data-category="面试">
+面试
+</button>
+<button class="filter-btn px-6 py-2 bg-gray-100 text-dark rounded-full font-medium hover:bg-gray-200 transition-colors" data-category="常识">
+常识判断
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="行测">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=1" alt="行测-数量关系" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+12:30
+</div>
+<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded">
+行测
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">行测-数量关系解题技巧大全</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+详细讲解数量关系题型的解题思路和技巧，帮助考生快速掌握答题方法。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=10" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">王老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.9</span>
+</div>
+</div>
+</div>
+</div>
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="申论">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=2" alt="申论-写作技巧" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+15:45
+</div>
+<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded">
+申论
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">申论-高分写作技巧与范例分析</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+深入分析申论写作的评分标准，提供实用的写作技巧和优秀范文解析。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=11" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">李老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.8</span>
+</div>
+</div>
+</div>
+</div>
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="面试">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=3" alt="面试-结构化面试" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+20:15
+</div>
+<div class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded">
+面试
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">公务员面试-结构化面试全攻略</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+全面讲解结构化面试的流程、题型和答题技巧，通过实例分析帮助考生提升面试能力。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=12" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">张老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.9</span>
+</div>
+</div>
+</div>
+</div>
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="行测">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=4" alt="行测-判断推理" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+14:20
+</div>
+<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded">
+行测
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">行测-判断推理快速解题方法</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+讲解判断推理题型的解题思路和技巧，包括图形推理、逻辑判断等内容。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=13" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">刘老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.7</span>
+</div>
+</div>
+</div>
+</div>
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="常识">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=5" alt="常识判断" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+18:30
+</div>
+<div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded">
+常识
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">常识判断-高频考点精讲</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+梳理常识判断部分的高频考点，包括政治、经济、法律、历史等多个领域。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=14" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">陈老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.6</span>
+</div>
+</div>
+</div>
+</div>
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="申论">
+<div class="relative">
+<img src="https://picsum.photos/600/400?random=6" alt="申论-热点分析" class="w-full h-48 object-cover">
+<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+<i class="fa fa-play text-xl"></i>
+</button>
+</div>
+<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+22:10
+</div>
+<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded">
+申论
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">申论-社会热点分析与应用</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">
+分析当前社会热点问题，讲解如何将热点素材应用到申论写作中，提升文章质量。
+</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://picsum.photos/50/50?random=15" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">赵老师</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">4.8</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-12">
+<button id="load-more" class="px-8 py-3 bg-white text-primary border border-primary rounded-lg font-medium hover:bg-primary-light transition-colors">
+加载更多课程
+<i class="fa fa-angle-down ml-2"></i>
+</button>
+</div>
+</div>
+</section>
+<section id="about" class="py-16 md:py-24 bg-gray-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row items-center justify-center gap-12">
+<div class="md:w-1/2 fade-in relative">
+<img src="https://picsum.photos/800/600?random=7" alt="福久公考" class="rounded-xl shadow-xl relative z-10">
+</div>
+<div class="md:w-1/2 slide-up flex flex-col justify-center">
+<h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-6">
+关于福久公考
+</h2>
+<p class="text-gray-600 mb-6">
+福久公考是深耕公务员考试培训领域的专业机构，凭借十余年教学沉淀，组建了由前公考命题组专家、一线授课名师及体制内面试考官构成的核心讲师团队。我们以 “精准提分、高效上岸” 为核心目标，为不同基础、不同备考阶段的考生，提供分层适配的培训课程与全周期精细化备考指导。
+</p>
+<p class="text-gray-600 mb-8">
+我们的视频课程由核心团队匠心打磨，全面覆盖行测（言语理解、判断推理、数资）、申论（归纳概括、文章写作）等必考模块。课程遵循 “基础 - 进阶 - 实战” 逻辑：既拆解学科底层逻辑、精讲高频考点，助考生构建完整知识框架；也提炼应试技巧、总结题型速解方法，突破解题效率瓶颈；同时结合近十年真题剖析命题趋势，配套高仿真模考与错题复盘，全方位提升应试能力与考场适应性。
+</p>
+<p class="text-gray-600 mb-8">
+课程同步配备讲义、手册等资料，及讲师在线答疑通道，实现 “学 - 练 - 评 - 改” 学习闭环。成立至今，我们已助力数万考生上岸各级机关，学员笔试平均提分 30+、面试通过率超 85%，在公考培训领域积累了扎实教学成果与良好行业口碑。
+</p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-check text-primary"></i>
+</div>
+<div class="ml-3">
+<h3 class="font-semibold text-dark">专业讲师团队</h3>
+<p class="text-sm text-gray-600">经验丰富，教学水平高</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-check text-primary"></i>
+</div>
+<div class="ml-3">
+<h3 class="font-semibold text-dark">系统课程体系</h3>
+<p class="text-sm text-gray-600">全面覆盖考试内容</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-check text-primary"></i>
+</div>
+<div class="ml-3">
+<h3 class="font-semibold text-dark">灵活学习方式</h3>
+<p class="text-sm text-gray-600">随时随地在线学习</p>
+</div>
+</div>
+</div>
+<a href="#contact" class="self-start px-6 py-3 bg-primary text-white rounded-lg font-medium text-center hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg">
+联系我们了解更多
+</a>
+</div>
+</div>
+</div>
+</section>
+<section id="instructors" class="py-16 md:py-24 bg-white">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
+专业讲师团队
+</h2>
+<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+我们的讲师团队由深耕公考领域的资深专家组成！他们不仅具备扎实的专业功底与前沿考情洞察，更拥有多年一线教学实战经验，能够精准拆解核心考点、传授高效解题技巧，助力考生直击得分关键、快速提升应试能力！
+</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+<div class="relative">
+<img src="https://picsum.photos/400/500?random=20" alt="王老师" class="w-full h-64 object-cover">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+<h3 class="font-bold text-white text-lg">王老师</h3>
+<p class="text-white/80 text-sm">行测资深讲师</p>
+</div>
+</div>
+<div class="p-5">
+<p class="text-gray-600 text-sm mb-4">
+前公务员考试命题组专家，10年行测教学经验，擅长数量关系和判断推理教学。
+</p>
+</div>
+</div>
+<div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+<div class="relative">
+<img src="https://picsum.photos/400/500?random=21" alt="李老师" class="w-full h-64 object-cover">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+<h3 class="font-bold text-white text-lg">尹老师</h3>
+<p class="text-white/80 text-sm">申论专家</p>
+</div>
+</div>
+<div class="p-5">
+<p class="text-gray-600 text-sm mb-4">
+申论命题研究专家，曾担任公务员考试阅卷官，8年申论教学经验，帮助无数学生提高申论成绩。
+</p>
+</div>
+</div>
+<div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+<div class="relative">
+<img src="https://picsum.photos/400/500?random=22" alt="张老师" class="w-full h-64 object-cover">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+<h3 class="font-bold text-white text-lg">张老师</h3>
+<p class="text-white/80 text-sm">面试辅导专家</p>
+</div>
+</div>
+<div class="p-5">
+<p class="text-gray-600 text-sm mb-4">
+前公务员面试考官，具有丰富的面试经验和教学经验，擅长结构化面试和无领导小组讨论指导。
+</p>
+</div>
+</div>
+<div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+<div class="relative">
+<img src="https://picsum.photos/400/500?random=23" alt="刘老师" class="w-full h-64 object-cover">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+<h3 class="font-bold text-white text-lg">刘老师</h3>
+<p class="text-white/80 text-sm">行测、常识讲师</p>
+</div>
+</div>
+<div class="p-5">
+<p class="text-gray-600 text-sm mb-4">
+行测和常识判断专家，知识面广，教学风格生动活泼，帮助学生轻松掌握复杂知识点。
+</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="testimonials" class="py-16 md:py-24 bg-primary-light">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16">
+<h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
+学员评价
+</h2>
+<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+听听我们的学员怎么说，他们通过福久公考的视频课程成功上岸，实现了自己的公务员梦想。
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+<div class="flex items-center mb-4">
+<img src="https://picsum.photos/60/60?random=30" alt="学员头像" class="w-12 h-12 rounded-full mr-4">
+<div>
+<h3 class="font-bold text-dark">张先生</h3>
+<p class="text-gray-500 text-sm">2022年成功上岸</p>
+</div>
+</div>
+<div class="mb-4 text-yellow-500">
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+</div>
+<p class="text-gray-600">
+"福久公考的视频课程非常棒，尤其是王老师的行测讲解，让我这个数学不好的人也能轻松应对数量关系题目。通过系统学习，我成功考上了理想的岗位。"
+</p>
+</div>
+<div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+<div class="flex items-center mb-4">
+<img src="https://picsum.photos/60/60?random=31" alt="学员头像" class="w-12 h-12 rounded-full mr-4">
+<div>
+<h3 class="font-bold text-dark">李女士</h3>
+<p class="text-gray-500 text-sm">2023年成功上岸</p>
+</div>
+</div>
+<div class="mb-4 text-yellow-500">
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star-half-o"></i>
+</div>
+<p class="text-gray-600">
+"申论一直是我的弱项，但听了李老师的课程后，我的写作水平有了明显提升。课程内容实用，讲解清晰，考试时我信心满满，最终取得了不错的成绩。"
+</p>
+</div>
+<div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+<div class="flex items-center mb-4">
+<img src="https://picsum.photos/60/60?random=32" alt="学员头像" class="w-12 h-12 rounded-full mr-4">
+<div>
+<h3 class="font-bold text-dark">王先生</h3>
+<p class="text-gray-500 text-sm">2022年成功上岸</p>
+</div>
+</div>
+<div class="mb-4 text-yellow-500">
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+<i class="fa fa-star"></i>
+</div>
+<p class="text-gray-600">
+"面试环节我一直很紧张，但张老师的面试课程让我受益匪浅。他不仅教我们答题技巧，还进行模拟面试，让我们在真实的环境中锻炼自己。最终我以面试第一的成绩成功上岸。"
+</p>
+</div>
+</div>
+<div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="text-center">
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="98">98</div>
+<div class="text-gray-600">学员满意度(%)</div>
+</div>
+<div class="text-center">
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="85">85</div>
+<div class="text-gray-600">通过率(%)</div>
+</div>
+<div class="text-center">
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="50000">50000+</div>
+<div class="text-gray-600">累计学员</div>
+</div>
+<div class="text-center">
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="100">20</div>
+<div class="text-gray-600">覆盖城市</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="contact" class="py-16 md:py-24 bg-gray-50">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row gap-12">
+<div class="md:w-1/2 slide-up">
+<h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-6">
+联系我们
+</h2>
+<p class="text-gray-600 mb-8">
+若您对我们的公考视频课程有任何疑问，或想深入了解更多公考培训相关资讯，诚邀您随时与我们联系！我们的专业客服团队将全程竭诚为您答疑解惑，助力您备考无忧！
+</p>
+<div class="space-y-6 mb-8">
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-map-marker text-primary"></i>
+</div>
+<div class="ml-4">
+<h3 class="font-semibold text-dark">地址</h3>
+<p class="text-gray-600">南京市鼓楼区北京西路73号3楼(距地铁4号线草场门站2号出口15米)
+</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-phone text-primary"></i>
+</div>
+<div class="ml-4">
+<h3 class="font-semibold text-dark">电话</h3>
+<p class="text-gray-600">025-86500277 / 18915991400</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-envelope text-primary"></i>
+</div>
+<div class="ml-4">
+<h3 class="font-semibold text-dark">邮箱</h3>
+<p class="text-gray-600">1074190262@qq.com</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="mt-1 bg-primary/10 p-2 rounded">
+<i class="fa fa-clock-o text-primary"></i>
+</div>
+<div class="ml-4">
+<h3 class="font-semibold text-dark">工作时间</h3>
+<p class="text-gray-600">周一 至 周五: 9:00 - 18:00</p>
+</div>
+</div>
+</div>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
+<i class="fa fa-weixin"></i>
+</a>
+<a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
+<i class="fa fa-qq"></i>
+</a>
+</div>
+</div>
+<div class="md:w-1/2 fade-in">
+<div class="bg-white rounded-xl p-8 shadow-xl">
+<h3 class="font-bold text-xl mb-6">发送消息</h3>
+<form id="contact-form">
+<div class="mb-4">
+<label for="name" class="block text-gray-700 text-sm font-medium mb-2">姓名</label>
+<input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的姓名">
+</div>
+<div class="mb-4">
+<label for="email" class="block text-gray-700 text-sm font-medium mb-2">邮箱</label>
+<input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的邮箱">
+</div>
+<div class="mb-4">
+<label for="phone" class="block text-gray-700 text-sm font-medium mb-2">电话</label>
+<input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的电话">
+</div>
+<div class="mb-6">
+<label for="message" class="block text-gray-700 text-sm font-medium mb-2">消息内容</label>
+<textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的消息内容"></textarea>
+</div>
+<button type="submit" class="w-full px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg">
+发送消息
+</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div id="video-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center">
+<div class="relative w-full max-w-4xl mx-4">
+<button id="close-modal" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors">
+<i class="fa fa-times text-3xl"></i>
+</button>
+<div class="bg-black rounded-lg overflow-hidden">
+<div class="aspect-w-16 aspect-h-9">
+<iframe id="video-player" src="" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+</div>
+<div class="p-4 bg-dark">
+<h3 id="video-title" class="text-white font-bold text-lg mb-2">视频标题</h3>
+<div class="flex justify-between items-center">
+<div class="flex items-center text-gray-400">
+<img src="https://picsum.photos/50/50?random=100" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span id="video-instructor">讲师名称</span>
+</div>
+<div class="flex items-center text-gray-400">
+<i class="fa fa-eye mr-1"></i>
+<span id="video-views">10,000+ 次观看</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+// 导航栏滚动效果
+window.addEventListener('scroll', function() {
+const navbar = document.getElementById('navbar');
+if (window.scrollY > 50) {
+navbar.classList.add('nav-scrolled');
+} else {
+navbar.classList.remove('nav-scrolled');
+}
+});
+// 移动端菜单切换
+document.getElementById('menu-toggle').addEventListener('click', function() {
+const mobileMenu = document.getElementById('mobile-menu');
+mobileMenu.classList.toggle('hidden');
+});
+// 视频分类筛选
+const filterButtons = document.querySelectorAll('.filter-btn');
+const videoCards = document.querySelectorAll('.video-card');
+filterButtons.forEach(button => {
+button.addEventListener('click', () => {
+// 移除所有按钮的活跃状态
+filterButtons.forEach(btn => {
+btn.classList.remove('bg-primary', 'text-white');
+btn.classList.add('bg-gray-100', 'text-dark');
+});
+// 添加当前按钮的活跃状态
+button.classList.remove('bg-gray-100', 'text-dark');
+button.classList.add('bg-primary', 'text-white');
+const category = button.getAttribute('data-category');
+// 筛选视频
+videoCards.forEach(card => {
+if (category === 'all' || card.getAttribute('data-category') === category) {
+card.style.display = 'block';
+} else {
+card.style.display = 'none';
+}
+});
+});
+});
+// 视频模态框
+function openVideoModal(videoUrl) {
+const modal = document.getElementById('video-modal');
+const videoPlayer = document.getElementById('video-player');
+videoPlayer.src = videoUrl;
+modal.style.display = 'flex';
+document.body.style.overflow = 'hidden';
+// 添加动画效果
+modal.querySelector('div').classList.add('modal-enter');
+// 设置视频信息（实际应用中应从数据中获取）
+document.getElementById('video-title').textContent = '公务员考试视频课程';
+document.getElementById('video-instructor').textContent = '专业讲师团队';
+document.getElementById('video-views').textContent = '12,543 次观看';
+}
+document.getElementById('close-modal').addEventListener('click', function() {
+const modal = document.getElementById('video-modal');
+const videoPlayer = document.getElementById('video-player');
+videoPlayer.src = '';
+modal.style.display = 'none';
+document.body.style.overflow = 'auto';
+// 移除动画效果
+modal.querySelector('div').classList.remove('modal-enter');
+});
+// 点击模态框背景关闭
+document.getElementById('video-modal').addEventListener('click', function(e) {
+if (e.target === this) {
+const videoPlayer = document.getElementById('video-player');
+videoPlayer.src = '';
+this.style.display = 'none';
+document.body.style.overflow = 'auto';
+// 移除动画效果
+this.querySelector('div').classList.remove('modal-enter');
+}
+});
+// 加载更多按钮
+document.getElementById('load-more').addEventListener('click', function() {
+// 模拟加载更多功能
+this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 加载中...';
+setTimeout(() => {
+this.innerHTML = '没有更多课程了';
+this.disabled = true;
+this.classList.add('opacity-50', 'cursor-not-allowed');
+}, 1500);
+});
+// 数字计数动画
+const counters = document.querySelectorAll('.counter');
+function startCounting() {
+counters.forEach(counter => {
+const target = parseInt(counter.getAttribute('data-target'));
+const duration = 2000; // 动画持续时间（毫秒）
+const step = target / (duration / 16); // 每16ms更新一次
+let count = 0;
+const updateCount = () => {
+count += step;
+if (count < target) {
+counter.textContent = Math.ceil(count).toLocaleString();
+requestAnimationFrame(updateCount);
+} else {
+counter.textContent = target.toLocaleString();
+}
+};
+updateCount();
+});
+}
+// 监听滚动，当计数器进入视口时开始动画
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersect
