@@ -58,7 +58,7 @@ to { transform: translateY(0); opacity: 1; }
 .video-card {
 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.video-<|card|>:hover {
+.video-card:hover {
 transform: translateY(-6px);
 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -67,7 +67,7 @@ transition: all 0.3s ease;
 transform: scale(0.9);
 opacity: 0;
 }
-.video-<|card|>:hover .play-button {
+.video-card:hover .play-button {
 transform: scale(1);
 opacity: 1;
 }
@@ -99,7 +99,9 @@ border-radius: 4px;
 background: #0f4bda;
 }</style>
 </head>
+
 <body class="font-inter text-dark bg-light">
+
 <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center py-4">
@@ -137,7 +139,9 @@ background: #0f4bda;
 </div>
 </div>
 </header>
-<section id="home" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-primary-light to-white">
+
+<!-- Section spacing reduced -->
+<section id="home" class="pt-24 pb-12 md:pt-28 md:pb-16 bg-gradient-to-br from-primary-light to-white">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex flex-col md:flex-row items-center">
 <div class="md:w-1/2 mb-10 md:mb-0 slide-up">
@@ -156,7 +160,8 @@ background: #0f4bda;
 联系我们
 </a>
 </div>
-<div class="flex flex-wrap gap-8 mt-12">
+<!-- Internal margin reduced -->
+<div class="flex flex-wrap gap-8 mt-10">
 <div class="text-center">
 <div class="text-3xl font-bold text-primary mb-1">10+</div>
 <div class="text-gray-600">精品视频课程</div>
@@ -172,16 +177,12 @@ background: #0f4bda;
 </div>
 </div>
 <div class="md:w-1/2 relative fade-in">
-<div class="relative rounded-xl overflow-hidden shadow-2xl">
-<img src="https://picsum.photos/800/500" alt="公务员考试培训" class="w-full h-auto">
-<div class="absolute inset-0 gradient-overlay flex items-center justify-center">
-<button class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white text-white hover:bg-white/30 transition-all" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-3xl"></i>
-</button>
-</div>
-<div class="absolute bottom-4 right-4 bg-black/70 text-white text-sm px-2 py-1 rounded">
-08:45
-</div>
+<!-- Video container fixed to 16:9 aspect ratio -->
+<div class="relative rounded-xl overflow-hidden shadow-2xl aspect-video bg-black">
+    <video controls poster="https://picsum.photos/800/500" class="absolute top-0 left-0 w-full h-full object-contain">
+        <source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 <div class="absolute -top-6 -left-6 w-24 h-24 bg-secondary/20 rounded-full blur-2xl"></div>
 <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
@@ -189,9 +190,12 @@ background: #0f4bda;
 </div>
 </div>
 </section>
-<section id="courses" class="py-16 md:py-24 bg-white">
+
+<!-- Section spacing reduced -->
+<section id="courses" class="py-6 md:py-8 bg-white">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
+<!-- Title margin reduced -->
+<div class="text-center mb-12">
 <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
 精品视频课程
 </h2>
@@ -217,17 +221,11 @@ background: #0f4bda;
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="行测">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=1" alt="行测-数量关系" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-12:30
-</div>
-<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=1">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded z-10">
 行测
 </div>
 </div>
@@ -249,17 +247,11 @@ background: #0f4bda;
 </div>
 </div>
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="申论">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=2" alt="申论-写作技巧" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-15:45
-</div>
-<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=2">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded z-10">
 申论
 </div>
 </div>
@@ -281,17 +273,11 @@ background: #0f4bda;
 </div>
 </div>
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="面试">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=3" alt="面试-结构化面试" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-20:15
-</div>
-<div class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=3">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded z-10">
 面试
 </div>
 </div>
@@ -313,17 +299,11 @@ background: #0f4bda;
 </div>
 </div>
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="行测">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=4" alt="行测-判断推理" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-14:20
-</div>
-<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=4">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 rounded z-10">
 行测
 </div>
 </div>
@@ -345,17 +325,11 @@ background: #0f4bda;
 </div>
 </div>
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="常识">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=5" alt="常识判断" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-18:30
-</div>
-<div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=5">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-2 py-1 rounded z-10">
 常识
 </div>
 </div>
@@ -377,17 +351,11 @@ background: #0f4bda;
 </div>
 </div>
 <div class="video-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="申论">
-<div class="relative">
-<img src="https://picsum.photos/600/400?random=6" alt="申论-热点分析" class="w-full h-48 object-cover">
-<div class="absolute inset-0 gradient-overlay opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-<button class="play-button w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-white" onclick="openVideoModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-<i class="fa fa-play text-xl"></i>
-</button>
-</div>
-<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-22:10
-</div>
-<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="https://picsum.photos/600/400?random=6">
+<source src="https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 bg-secondary text-white text-xs px-2 py-1 rounded z-10">
 申论
 </div>
 </div>
@@ -409,7 +377,8 @@ background: #0f4bda;
 </div>
 </div>
 </div>
-<div class="text-center mt-12">
+<!-- Internal margin reduced -->
+<div class="text-center mt-10">
 <button id="load-more" class="px-8 py-3 bg-white text-primary border border-primary rounded-lg font-medium hover:bg-primary-light transition-colors">
 加载更多课程
 <i class="fa fa-angle-down ml-2"></i>
@@ -417,7 +386,9 @@ background: #0f4bda;
 </div>
 </div>
 </section>
-<section id="about" class="py-16 md:py-24 bg-gray-50">
+
+<!-- Section spacing reduced -->
+<section id="about" class="py-6 md:py-8 bg-gray-50">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex flex-col md:flex-row items-center justify-center gap-12">
 <div class="md:w-1/2 fade-in relative">
@@ -430,10 +401,10 @@ background: #0f4bda;
 <p class="text-gray-600 mb-6">
 福久公考是深耕公务员考试培训领域的专业机构，凭借十余年教学沉淀，组建了由前公考命题组专家、一线授课名师及体制内面试考官构成的核心讲师团队。我们以 “精准提分、高效上岸” 为核心目标，为不同基础、不同备考阶段的考生，提供分层适配的培训课程与全周期精细化备考指导。
 </p>
-<p class="text-gray-600 mb-8">
+<p class="text-gray-600 mb-6">
 我们的视频课程由核心团队匠心打磨，全面覆盖行测（言语理解、判断推理、数资）、申论（归纳概括、文章写作）等必考模块。课程遵循 “基础 - 进阶 - 实战” 逻辑：既拆解学科底层逻辑、精讲高频考点，助考生构建完整知识框架；也提炼应试技巧、总结题型速解方法，突破解题效率瓶颈；同时结合近十年真题剖析命题趋势，配套高仿真模考与错题复盘，全方位提升应试能力与考场适应性。
 </p>
-<p class="text-gray-600 mb-8">
+<p class="text-gray-600 mb-6">
 课程同步配备讲义、手册等资料，及讲师在线答疑通道，实现 “学 - 练 - 评 - 改” 学习闭环。成立至今，我们已助力数万考生上岸各级机关，学员笔试平均提分 30+、面试通过率超 85%，在公考培训领域积累了扎实教学成果与良好行业口碑。
 </p>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -472,9 +443,12 @@ background: #0f4bda;
 </div>
 </div>
 </section>
-<section id="instructors" class="py-16 md:py-24 bg-white">
+
+<!-- Section spacing reduced -->
+<section id="instructors" class="py-6 md:py-8 bg-white">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
+<!-- Title margin reduced -->
+<div class="text-center mb-12">
 <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
 专业讲师团队
 </h2>
@@ -485,7 +459,7 @@ background: #0f4bda;
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
 <div class="relative">
-<img src="https://picsum.photos/400/500?random=20" alt="王老师" class="w-full h-64 object-cover">
+<img src="https://picsum.photos/400/500?random=20" alt="王老师" class="w-full h-64 object-contain">
 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
 <h3 class="font-bold text-white text-lg">王老师</h3>
 <p class="text-white/80 text-sm">行测资深讲师</p>
@@ -499,7 +473,7 @@ background: #0f4bda;
 </div>
 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
 <div class="relative">
-<img src="https://picsum.photos/400/500?random=21" alt="李老师" class="w-full h-64 object-cover">
+<img src="https://picsum.photos/400/500?random=21" alt="李老师" class="w-full h-64 object-contain">
 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
 <h3 class="font-bold text-white text-lg">尹老师</h3>
 <p class="text-white/80 text-sm">申论专家</p>
@@ -513,7 +487,7 @@ background: #0f4bda;
 </div>
 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
 <div class="relative">
-<img src="https://picsum.photos/400/500?random=22" alt="张老师" class="w-full h-64 object-cover">
+<img src="https://picsum.photos/400/500?random=22" alt="张老师" class="w-full h-64 object-contain">
 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
 <h3 class="font-bold text-white text-lg">张老师</h3>
 <p class="text-white/80 text-sm">面试辅导专家</p>
@@ -527,7 +501,7 @@ background: #0f4bda;
 </div>
 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
 <div class="relative">
-<img src="https://picsum.photos/400/500?random=23" alt="刘老师" class="w-full h-64 object-cover">
+<img src="https://picsum.photos/400/500?random=23" alt="刘老师" class="w-full h-64 object-contain">
 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
 <h3 class="font-bold text-white text-lg">刘老师</h3>
 <p class="text-white/80 text-sm">行测、常识讲师</p>
@@ -542,14 +516,17 @@ background: #0f4bda;
 </div>
 </div>
 </section>
-<section id="testimonials" class="py-16 md:py-24 bg-primary-light">
+
+<!-- Section spacing reduced -->
+<section id="testimonials" class="py-6 md:py-8 bg-primary-light">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
+<!-- Title margin reduced -->
+<div class="text-center mb-12">
 <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-4">
 学员评价
 </h2>
 <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-听听我们的学员怎么说，他们通过福久公考的视频课程成功上岸，实现了自己的公务员梦想。
+从备考迷茫到考场从容，从默默努力到成功上岸，福久公考视频课程见证了无数学员的蜕变！听听他们的真实分享，你的公务员梦想，我们帮你照进现实～
 </p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -611,31 +588,32 @@ background: #0f4bda;
 </p>
 </div>
 </div>
-<div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+<!-- Internal margin reduced -->
+<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8">
 <div class="text-center">
-<div class="text-4xl font-bold text-primary mb-2 counter" data-target="98">98</div>
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="98">0</div>
 <div class="text-gray-600">学员满意度(%)</div>
 </div>
 <div class="text-center">
-<div class="text-4xl font-bold text-primary mb-2 counter" data-target="85">85</div>
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="85">0</div>
 <div class="text-gray-600">通过率(%)</div>
 </div>
 <div class="text-center">
-<div class="text-4xl font-bold text-primary mb-2 counter" data-target="50000">50000+</div>
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="50000">0+</div>
 <div class="text-gray-600">累计学员</div>
 </div>
 <div class="text-center">
-<div class="text-4xl font-bold text-primary mb-2 counter" data-target="100">20</div>
+<div class="text-4xl font-bold text-primary mb-2 counter" data-target="20">0</div>
 <div class="text-gray-600">覆盖城市</div>
 </div>
 </div>
 </div>
 </section>
 
-<section id="contact" class="py-16 md:py-24 bg-gray-50">
+<!-- Section spacing adjusted -->
+<section id="contact" class="pt-6 pb-4 md:pt-8 md:pb-6 bg-gray-50">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex flex-col md:flex-row gap-12">
-<div class="md:w-1/2 slide-up">
+<div class="flex flex-col md:flex-row gap-12 md:items-center"><div class="md:w-1/2 slide-up">
 <h2 class="text-[clamp(1.75rem,4vw,2.5rem)] font-bold text-dark mb-6">
 联系我们
 </h2>
@@ -648,7 +626,7 @@ background: #0f4bda;
 <i class="fa fa-map-marker text-primary"></i>
 </div>
 <div class="ml-4">
-<h3 class="font-semibold text-dark">地址</h3>
+<h3 class="font-semibold text-dark">上课地址</h3>
 <p class="text-gray-600">南京市鼓楼区北京西路73号3楼(距地铁4号线草场门站2号出口15米)
 </p>
 </div>
@@ -658,197 +636,241 @@ background: #0f4bda;
 <i class="fa fa-phone text-primary"></i>
 </div>
 <div class="ml-4">
-<h3 class="font-semibold text-dark">电话</h3>
+<h3 class="font-semibold text-dark">联系电话</h3>
 <p class="text-gray-600">025-86500277 / 18915991400</p>
 </div>
 </div>
 <div class="flex items-start">
 <div class="mt-1 bg-primary/10 p-2 rounded">
-<i class="fa fa-envelope text-primary"></i>
+<i class="fa fa-weixin text-primary"></i>
 </div>
 <div class="ml-4">
-<h3 class="font-semibold text-dark">邮箱</h3>
-<p class="text-gray-600">1074190262@qq.com</p>
+<h3 class="font-semibold text-dark">微信咨询</h3>
+<img src="https://yhks.cn/Upload/ajax/image/1757733058.png" alt="微信二维码" class="w-36 h-36 mt-2 rounded-lg shadow-sm">
 </div>
 </div>
-<div class="flex items-start">
-<div class="mt-1 bg-primary/10 p-2 rounded">
-<i class="fa fa-clock-o text-primary"></i>
-</div>
-<div class="ml-4">
-<h3 class="font-semibold text-dark">工作时间</h3>
-<p class="text-gray-600">周一 至 周五: 9:00 - 18:00</p>
-</div>
-</div>
-</div>
-<div class="flex space-x-4">
-<a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
-<i class="fa fa-weixin"></i>
-</a>
-<a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
-<i class="fa fa-qq"></i>
-</a>
 </div>
 </div>
 <div class="md:w-1/2 fade-in">
-<div class="bg-white rounded-xl p-8 shadow-xl">
-<h3 class="font-bold text-xl mb-6">发送消息</h3>
-<form id="contact-form">
-<div class="mb-4">
-<label for="name" class="block text-gray-700 text-sm font-medium mb-2">姓名</label>
-<input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的姓名">
-</div>
-<div class="mb-4">
-<label for="email" class="block text-gray-700 text-sm font-medium mb-2">邮箱</label>
-<input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的邮箱">
-</div>
-<div class="mb-4">
-<label for="phone" class="block text-gray-700 text-sm font-medium mb-2">电话</label>
-<input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的电话">
-</div>
-<div class="mb-6">
-<label for="message" class="block text-gray-700 text-sm font-medium mb-2">消息内容</label>
-<textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="请输入您的消息内容"></textarea>
-</div>
-<button type="submit" class="w-full px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg">
-发送消息
-</button>
-</form>
+<div class="rounded-xl shadow-xl overflow-hidden">
+<img src="https://sp.njgwy.cn/l/tupian/%E5%AE%A3%E4%BC%A0%E5%9B%BE/%E5%9C%B0%E5%9B%BE.png" alt="福久公考位置地图" class="w-full h-full object-contain" loading="lazy">
 </div>
 </div>
 </div>
 </div>
 </section>
 
-<div id="video-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center">
-<div class="relative w-full max-w-4xl mx-4">
-<button id="close-modal" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors">
-<i class="fa fa-times text-3xl"></i>
-</button>
-<div class="bg-black rounded-lg overflow-hidden">
-<div class="aspect-w-16 aspect-h-9">
-<iframe id="video-player" src="" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
-</div>
-<div class="p-4 bg-dark">
-<h3 id="video-title" class="text-white font-bold text-lg mb-2">视频标题</h3>
-<div class="flex justify-between items-center">
-<div class="flex items-center text-gray-400">
-<img src="https://picsum.photos/50/50?random=100" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
-<span id="video-instructor">讲师名称</span>
-</div>
-<div class="flex items-center text-gray-400">
-<i class="fa fa-eye mr-1"></i>
-<span id="video-views">10,000+ 次观看</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <script>
-// 导航栏滚动效果
-window.addEventListener('scroll', function() {
+document.addEventListener('DOMContentLoaded', () => {
 const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', function() {
 if (window.scrollY > 50) {
 navbar.classList.add('nav-scrolled');
 } else {
 navbar.classList.remove('nav-scrolled');
 }
 });
-// 移动端菜单切换
-document.getElementById('menu-toggle').addEventListener('click', function() {
+
+const menuToggle = document.getElementById('menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
+menuToggle.addEventListener('click', function() {
 mobileMenu.classList.toggle('hidden');
 });
-// 视频分类筛选
+
 const filterButtons = document.querySelectorAll('.filter-btn');
-const videoCards = document.querySelectorAll('.video-card');
+let videoCards = document.querySelectorAll('.video-card');
 filterButtons.forEach(button => {
 button.addEventListener('click', () => {
-// 移除所有按钮的活跃状态
 filterButtons.forEach(btn => {
 btn.classList.remove('bg-primary', 'text-white');
 btn.classList.add('bg-gray-100', 'text-dark');
 });
-// 添加当前按钮的活跃状态
 button.classList.remove('bg-gray-100', 'text-dark');
 button.classList.add('bg-primary', 'text-white');
 const category = button.getAttribute('data-category');
-// 筛选视频
 videoCards.forEach(card => {
+card.style.display = 'none';
+card.classList.remove('fade-in');
 if (category === 'all' || card.getAttribute('data-category') === category) {
 card.style.display = 'block';
-} else {
-card.style.display = 'none';
+setTimeout(() => card.classList.add('fade-in'), 10);
 }
 });
 });
 });
-// 视频模态框
-function openVideoModal(videoUrl) {
-const modal = document.getElementById('video-modal');
-const videoPlayer = document.getElementById('video-player');
-videoPlayer.src = videoUrl;
-modal.style.display = 'flex';
-document.body.style.overflow = 'hidden';
-// 添加动画效果
-modal.querySelector('div').classList.add('modal-enter');
-// 设置视频信息（实际应用中应从数据中获取）
-document.getElementById('video-title').textContent = '公务员考试视频课程';
-document.getElementById('video-instructor').textContent = '专业讲师团队';
-document.getElementById('video-views').textContent = '12,543 次观看';
+
+const loadMoreBtn = document.getElementById('load-more');
+const coursesGrid = document.querySelector('#courses .grid');
+const newCoursesData = [
+{
+category: '行测',
+videoSrc: 'https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4',
+poster: 'https://picsum.photos/600/400?random=7',
+title: '行测-言语理解高分突破',
+description: '系统梳理言语理解模块考点，传授快速定位答案的技巧，提升阅读速度与正确率。',
+teacher: '周老师',
+teacherAvatar: 'https://picsum.photos/50/50?random=16',
+rating: '4.8',
+tagColor: 'bg-primary'
+},
+{
+category: '面试',
+videoSrc: 'https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4',
+poster: 'https://picsum.photos/600/400?random=8',
+title: '面试-无领导小组讨论实战',
+description: '详解无领导小组讨论流程与角色定位，通过实战演练提升团队协作与表达能力。',
+teacher: '孙老师',
+teacherAvatar: 'https://picsum.photos/50/50?random=17',
+rating: '4.9',
+tagColor: 'bg-green-500'
+},
+{
+category: '申论',
+videoSrc: 'https://sp.njgwy.cn/l/shipin/shiting/msxs.mp4',
+poster: 'https://picsum.photos/600/400?random=9',
+title: '申论-应用文写作专项提升',
+description: '针对公文、事务文书等常见应用文题型进行专项讲解，掌握格式规范与写作要点。',
+teacher: '钱老师',
+teacherAvatar: 'https://picsum.photos/50/50?random=18',
+rating: '4.7',
+tagColor: 'bg-secondary'
 }
-document.getElementById('close-modal').addEventListener('click', function() {
-const modal = document.getElementById('video-modal');
-const videoPlayer = document.getElementById('video-player');
-videoPlayer.src = '';
-modal.style.display = 'none';
-document.body.style.overflow = 'auto';
-// 移除动画效果
-modal.querySelector('div').classList.remove('modal-enter');
-});
-// 点击模态框背景关闭
-document.getElementById('video-modal').addEventListener('click', function(e) {
-if (e.target === this) {
-const videoPlayer = document.getElementById('video-player');
-videoPlayer.src = '';
-this.style.display = 'none';
-document.body.style.overflow = 'auto';
-// 移除动画效果
-this.querySelector('div').classList.remove('modal-enter');
-}
-});
-// 加载更多按钮
-document.getElementById('load-more').addEventListener('click', function() {
-// 模拟加载更多功能
+];
+let coursesLoaded = false;
+loadMoreBtn.addEventListener('click', function() {
+if (coursesLoaded) return;
 this.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 加载中...';
 setTimeout(() => {
+newCoursesData.forEach(course => {
+const cardHTML = `
+<div class="video-card bg-white rounded-xl overflow-hidden shadow-lg fade-in" data-category="${course.category}">
+<div class="relative bg-black aspect-video">
+<video controls class="w-full h-full object-contain" preload="metadata" poster="${course.poster}">
+<source src="${course.videoSrc}" type="video/mp4">
+</video>
+<div class="absolute top-3 left-3 ${course.tagColor} text-white text-xs px-2 py-1 rounded z-10">
+${course.category}
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-bold text-lg mb-2 line-clamp-2">${course.title}</h3>
+<p class="text-gray-600 text-sm mb-4 line-clamp-2">${course.description}</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<img src="${course.teacherAvatar}" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+<span class="text-sm text-gray-700">${course.teacher}</span>
+</div>
+<div class="flex items-center text-yellow-500 text-sm">
+<i class="fa fa-star"></i>
+<span class="ml-1">${course.rating}</span>
+</div>
+</div>
+</div>
+</div>`;
+coursesGrid.insertAdjacentHTML('beforeend', cardHTML);
+});
+videoCards = document.querySelectorAll('.video-card');
 this.innerHTML = '没有更多课程了';
 this.disabled = true;
 this.classList.add('opacity-50', 'cursor-not-allowed');
+coursesLoaded = true;
 }, 1500);
 });
-// 数字计数动画
-const counters = document.querySelectorAll('.counter');
-function startCounting() {
-counters.forEach(counter => {
-const target = parseInt(counter.getAttribute('data-target'));
-const duration = 2000; // 动画持续时间（毫秒）
-const step = target / (duration / 16); // 每16ms更新一次
-let count = 0;
-const updateCount = () => {
-count += step;
-if (count < target) {
-counter.textContent = Math.ceil(count).toLocaleString();
-requestAnimationFrame(updateCount);
-} else {
-counter.textContent = target.toLocaleString();
+
+const testimonialsData = [
+{ name: '赵同学', status: '2023年国考上岸', rating: 5, comment: '王老师的行测课真的神了！数量关系部分讲得通俗易懂，我这个文科生都听懂了，考试时节省了大量时间。'},
+{ name: '孙女士', status: '2022年省考上岸', rating: 4.5, comment: '尹老师的申论课让我茅塞顿开，以前总觉得文章空洞，现在学会了结合热点，有话可说，分数也上来了。'},
+{ name: '周先生', status: '2023年市直单位', rating: 5, comment: '面试是我最怕的环节，感谢张老师的一对一指导，让我从不敢开口到对答如流，面试拿了全场最高分！'},
+{ name: '吴小姐', status: '2022年乡镇公务员', rating: 5, comment: '刘老师的常识判断课太有意思了，知识点串讲，记忆起来特别快，性价比超高！'},
+{ name: '郑先生', status: '2023年税务系统', rating: 4.5, comment: '福久公考的课程体系非常科学，从基础到冲刺，每一步都安排得明明白白，跟着学就对了！'},
+{ name: '陈同学', status: '2022年应届上岸', rating: 5, comment: '作为一个小白，这里的视频课程让我快速入门，老师们都很有耐心，答疑也很及时，强烈推荐！'},
+{ name: '冯女士', status: '在职备考一次上岸', rating: 5, comment: '在职备考时间很紧张，幸好有福久的线上视频，可以随时随地学习，课程重点突出，非常高效。'},
+{ name: '蒋先生', status: '2023年公安系统', rating: 4.5, comment: '判断推理以前是我失分的重灾区，王老师的秒杀技巧太实用了，考试的时候图形推理几乎没花时间。'},
+{ name: '魏小姐', status: '2022年海关上岸', rating: 5, comment: '申论的大作文一直是我头疼的问题。尹老师的范文精讲和写作框架给了我很大启发，现在写文章有逻辑多了。'},
+{ name: '叶先生', status: '二次考公成功', rating: 5, comment: '第二次考公压力很大，张老师的面试心理疏导和技巧讲解帮我重拾了信心，这次面试表现得非常自信。'},
+{ name: '许女士', status: '2023年国考部委', rating: 5, comment: '课程质量真的没得说，感觉比很多大机构的都好，老师都是有真才实学的，讲课很实在，不讲废话。'},
+{ name: '丁同学', status: '2022年选调生', rating: 4.5, comment: '资料分析的计算量很大，但老师教的估算方法非常管用，正确率和速度都上来了。'},
+{ name: '秦先生', status: '2023年法院系统', rating: 5, comment: '法律部分的常识讲解很到位，刘老师总结的口诀和关联记忆法，让我轻松记住了很多枯燥的法条。'},
+{ name: '江女士', status: '2022年市考第一', rating: 5, comment: '从笔试到面试，我都是跟着福久公考的课程，感觉一路都有人指导，心里特别踏实，最后笔面第一上岸！'},
+{ name: '孟同学', status: '应届考取省直', rating: 5, comment: '感谢福久公考的所有老师，课程设置合理，视频清晰，讲义详尽，是我上岸路上最大的助力！'},
+{ name: '史先生', status: '30+大龄上岸', rating: 4.5, comment: '年纪大了记忆力下降，但老师们的讲解很有条理，帮助我构建了知识体系，而不是死记硬背。'},
+{ name: '唐女士', status: '2023年省考成功', rating: 5, comment: '申论小题的提分效果非常明显，尹老师教的找点技巧和整合方法，让我在考场上能快速准确地作答。'},
+{ name: '侯先生', status: '2022年乡镇事业编', rating: 4.5, comment: '这里的课程不仅适用于公务员，考事业编也很有用。知识是相通的，老师讲得很透彻。'},
+{ name: '薛小姐', status: '跨专业考公上岸', rating: 5, comment: '我本科学的艺术，对公考一窍不通。是福久的系统课程带我入门，并最终成功上岸，真的太感谢了。'},
+{ name: '常同学', status: '2023年二次面试通过', rating: 5, comment: '第一次面试因为紧张失败了。张老师的课程不仅教方法，更重要的是锻炼了我的临场应变和抗压能力，这次稳稳通过。'}
+];
+const testimonialContainers = document.querySelectorAll('#testimonials .grid > div');
+function generateStarsHTML(rating) {
+let html = '';
+const fullStars = Math.floor(rating);
+const halfStar = rating % 1 !== 0;
+for (let i = 0; i < fullStars; i++) {
+html += '<i class="fa fa-star"></i> ';
 }
-};
-updateCount();
+if (halfStar) {
+html += '<i class="fa fa-star-half-o"></i> ';
+}
+for (let i = 0; i < 5 - Math.ceil(rating); i++) {
+html += '<i class="fa fa-star-o"></i> ';
+}
+return html;
+}
+function updateTestimonials() {
+const shuffled = [...testimonialsData].sort(() => 0.5 - Math.random());
+const selected = shuffled.slice(0, 3);
+testimonialContainers.forEach((container, index) => {
+const data = selected[index];
+if (!data) return;
+container.classList.remove('fade-in');
+void container.offsetWidth;
+container.innerHTML = `
+<div class="flex items-center mb-4">
+<img src="https://picsum.photos/60/60?random=${30 + index + Math.floor(Math.random() * 100)}" alt="学员头像" class="w-12 h-12 rounded-full mr-4">
+<div>
+<h3 class="font-bold text-dark">${data.name}</h3>
+<p class="text-gray-500 text-sm">${data.status}</p>
+</div>
+</div>
+<div class="mb-4 text-yellow-500">${generateStarsHTML(data.rating)}</div>
+<p class="text-gray-600">${data.comment}</p>`;
+container.classList.add('fade-in');
 });
 }
-// 监听滚动，当计数器进入视口时开始动画
-const observer = new IntersectionObserver((entries) => {
+updateTestimonials();
+setInterval(updateTestimonials, 3000);
+
+const counters = document.querySelectorAll('.counter');
+const animateCounter = (counter) => {
+const target = +counter.getAttribute('data-target');
+const isLargeNumber = counter.textContent.includes('+');
+const duration = 2000;
+const stepTime = Math.abs(Math.floor(duration / target)) || 1;
+let current = 0;
+const timer = setInterval(() => {
+current += 1;
+if (isLargeNumber) {
+counter.textContent = current.toLocaleString() + '+';
+} else {
+counter.textContent = current.toLocaleString();
+}
+if (current === target) {
+clearInterval(timer);
+}
+}, stepTime);
+};
+const counterObserver = new IntersectionObserver((entries, observer) => {
 entries.forEach(entry => {
-if (entry.isIntersect
+if (entry.isIntersecting) {
+animateCounter(entry.target);
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.5 });
+counters.forEach(counter => {
+counterObserver.observe(counter);
+});
+});
+</script>
+
+</body>
+</html>
